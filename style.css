@@ -3,3 +3,7 @@ table, td, tr {
     border-collapse: collapse;
     table-layout: fixed;
 }
+
+canvas {
+	display: block;
+}

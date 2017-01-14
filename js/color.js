@@ -38,3 +38,4 @@ function ColorClass(){
 }
 
 var Color = new ColorClass();
+console.log(Palettes);

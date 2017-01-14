@@ -4,47 +4,30 @@ function ForecastTable(coords, name){
 	this.windMapMaxHeight = 4000;
 	this.cloudMapMaxHeight = 5000;
 	
-	
-	this.data = {};
-	this.coords = {};
-	this.div = document.createElement("div");
-	
 	this.table = {};
+	this.coords = {};
 	
-	this.getNumEntries = function(targetHeight, day){
-		console.log(this.data);
-		var heights = this.data[day][12].z;
-		var id;
-		for(id = 0; id < heights.length; id++){
-			if(heights[id] > targetHeight){
-				break;
-			}
-		}
-		return id;
-	};
 	
-	this.constructCloudMap = function(day){
-		var cloudData = this.data[day];
-		return ForecastDrawer.drawDataMap(Object.keys(cloudData),
-										  this.getNumEntries(this.cloudMapMaxHeight,day),
-										  function (cloudData,time,height) {
-											  return cloudData[time]["cldfra"][height];
-										  }.bind(this,cloudData),
+	this.constructCloudMap = function(data){
+		return ForecastDrawer.drawDataMap(data,
+										  this.cloudMapMaxHeight,
+										  function (data,time,height) {
+											  return data[time]["cldfra"][height];
+										  },
 										  function (data) {
 											  var gray = 100*data + 255*(1-data);
 											  return [gray,gray,gray];
 										  });
-	}
+	};
 		
-	this.constructWindMap = function(day){
-		var windData = this.data[day];
-		return ForecastDrawer.drawDataMap(Object.keys(windData),
-										  this.getNumEntries(this.windMapMaxHeight,day),
-										  function (windData,time,height) {
-											  var umet = windData[time]["umet"][height];
-											  var vmet = windData[time]["vmet"][height];
+	this.constructWindMap = function(data){
+		return ForecastDrawer.drawDataMap(data,
+										  this.windMapMaxHeight,
+										  function (data,time,height) {
+											  var umet = data[time]["umet"][height];
+											  var vmet = data[time]["vmet"][height];
 											  return Math.sqrt(umet*umet+vmet*vmet);
-										  }.bind(this,windData),
+										  },
 										  Color.get.bind(Color, "PAL_WIND")
 			);
 	};
@@ -54,21 +37,27 @@ function ForecastTable(coords, name){
 			element.removeChild(element.firstChild);
 		}
 		return element;
-	}
-	
-	this.buildElement = function(day){
-		//console.log(this);
-		this.clearElement(this.table["windMap"][day]).appendChild(this.constructWindMap(day));
-		this.clearElement(this.table["cloudMap"][day]).appendChild(this.constructCloudMap(day));
 	};
 	
-	this.numDataLoaded = 0;
-
+	this.constructRow = function(data, type, colmap){
+		return ForecastDrawer.drawColorLine(data, type, Color.get.bind(Color,colmap));
+	};
+	
+	this.buildElement = function(day,data){
+		//console.log(this);
+		this.clearElement(this.table["windMap"][day]).appendChild(this.constructWindMap(data));
+		this.clearElement(this.table["cloudMap"][day]).appendChild(this.constructCloudMap(data));
+		this.clearElement(this.table["raintot"][day]).appendChild(this.constructRow(data, "raintot", "PAL_RAIN"));
+		this.table["raintot"][day].appendChild(this.constructRow(data, "raintot", "PAL_RAIN"));
+	};
+	
 	this.addTableRow = function(tableElem, dates, name){
 		this.table[name] = {};
 		var trElem = document.createElement("TR");
+		trElem.style.padding="0px";
 		for(var i = 0; i < dates.length; i++){
 			var tdElem = document.createElement("TD");
+			tdElem.style.padding="0px";
 			tdElem.innerHTML="loading...";
 			var date = dates[i];
 			this.table[name][date] = tdElem;
@@ -78,36 +67,26 @@ function ForecastTable(coords, name){
 	};
 	
 	this.initialize = function(){
-		
 		var tmpTable = document.createElement("TABLE");
-		
-		/*
-		var tmpTR = document.createElement("TR");
-		var tmpTD = document.createElement("TD");
-		tmpTD.innerHTML = "Loading...";
-		tmpTR.appendChild(tmpTD);
-		tmpTable.appendChild(tmpTR);
-		this.div.appendChild(tmpTable);
-		*/
-		
+				
 		var datesToLoad = WeatherData.runDays;
 		
 		this.addTableRow(tmpTable, Object.keys(datesToLoad), "windMap");
 		this.addTableRow(tmpTable, Object.keys(datesToLoad), "cloudMap");
+		this.addTableRow(tmpTable, Object.keys(datesToLoad), "raintot");
+		
 		
 		for(day in datesToLoad){
 			// Send one async load for every day required
-			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra"],
-				function(day, numDates, data){
+			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra", "raintot"],
+				function(day, data){
 					// retreive coordinates from one of the loads
 					if(day === WeatherData.today){
 						this.coords = data.gridCoords;
 					}
 					
-					this.data[day] = data[day];
-					
-					this.buildElement(day);
-				}.bind(this, day, Object.keys(datesToLoad).length)
+					this.buildElement(day, data[day]);
+				}.bind(this, day)
 			);
 		}
 		return tmpTable;
