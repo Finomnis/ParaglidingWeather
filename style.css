@@ -1,5 +1,5 @@
-table, td, tr {
-    border: 1px solid black;
+table, td, tr, th {
+    border: 3px solid pink;
     border-collapse: collapse;
     table-layout: fixed;
 }

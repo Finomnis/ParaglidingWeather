@@ -18,7 +18,7 @@ function ForecastDrawerClass(){
 	this.drawDataMap = function(data, maxHeight, getDataCallback, getColorCallback){
 	
 		console.log(data);
-		console.log(maxHeight);
+		console.log("Maxheight: " + maxHeight);
 		
 		var numHeights = this.getNumEntries(data, maxHeight);
 		
@@ -58,6 +58,56 @@ function ForecastDrawerClass(){
 			ctx.fillRect(i*this.columnWidth,0,this.columnWidth,this.rowHeight);
 		}	
 		return canvas;
+	};
+	
+	this.drawAllPallettes = function(width, height){
+		var div = document.createElement("div");
+		var table = document.createElement("table");
+		
+		for(palette in Palettes){
+			var tr = document.createElement("tr");
+			tr.style.border="1px solid black";
+			{
+				var td = document.createElement("td");
+				td.style.border="1px solid black";
+				td.style.padding="0px";
+				td.innerHTML=palette;
+				tr.appendChild(td);
+			}
+			{
+				var canvas = document.createElement("canvas");
+				canvas.width = width;
+				canvas.height = height;
+				canvas.style.border = "none";
+				var ctx = canvas.getContext("2d");
+				
+				ctx.fillStyle = "red";
+				
+				var pal = Palettes[palette];
+				
+				var val0 = pal[0][0];
+				var val1 = pal[pal.length-1][0];
+				
+				for(var i = 0; i < width; i++){
+					var weight1 = i/(width-1);
+					var weight0 = 1-weight1;
+					var val = val0*weight0+val1*weight1;
+					var col = Color.get(palette, val);
+					ctx.fillStyle = "rgb("+Math.round(col[0])+","+Math.round(col[1])+","+Math.round(col[2])+")";
+					ctx.fillRect(i,0,1,height);
+				}
+				var td = document.createElement("td");
+				td.style.border="1px solid black";
+				td.style.padding="0px";
+				td.appendChild(canvas);
+				tr.appendChild(td);
+			}
+			table.appendChild(tr);
+		}
+
+		table.style.border="2px solid black";
+		div.appendChild(table);
+		return div;
 	};
 }
 
