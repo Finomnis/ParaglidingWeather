@@ -227,9 +227,7 @@ function ForecastTable(coords, name){
 				th.style.backgroundColor = "#e0e0e0";
 				th.rowSpan=numSubElements+1;
 				var headerDiv = document.createElement("DIV");
-				
-				headerDiv.style.writingMode="vertical-rl";
-				headerDiv.style.transform="rotate(180deg)";
+				headerDiv.className = "vertical";
 				headerDiv.innerHTML=topic + "<BR>";
 				
 				

@@ -4,6 +4,15 @@ table, td, tr, th {
     table-layout: fixed;
 }
 
+div.vertical {
+	-ms-writing-mode: tb-rl; /* old syntax. IE */
+	-webkit-writing-mode: vertical-rl;
+	-moz-writing-mode: vertical-rl;
+	-ms-writing-mode: vertical-rl;
+	writing-mode: vertical-rl; /* new syntax */
+	transform: rotate(180deg);
+}
+
 canvas {
 	display: block;
 }
