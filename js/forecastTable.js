@@ -43,6 +43,11 @@ function ForecastTable(coords, name){
 		return ForecastDrawer.drawColorLine(data, type, Color.get.bind(Color,colmap));
 	};
 	
+	this.constructArrowHeightRow = function(type1, type2, height, colmap, data){
+		var height0 = data[Object.keys(data)[0]]["ter"];
+		return ForecastDrawer.drawColorArrowHeightLine(data, type1, type2, height0 + height, Color.get.bind(Color,colmap));
+	};
+	
 	this.tableElements = {
 			"Weather":{
 				"Clouds": this.constructCloudMap.bind(this),
@@ -50,10 +55,10 @@ function ForecastTable(coords, name){
 			},
 			"Wind":{
 				"Height Distribution":this.constructWindMap.bind(this),
-				"BL Wind Shear":this.constructRow.bind(this,"blwindshear", "PAL_WIND"),
-				"2000 GND":this.todoElement,
-				"1000 GND":this.todoElement,
-				"Surface":this.todoElement
+				"2000 GND":this.constructArrowHeightRow.bind(this,"umet","vmet",2000,"PAL_WIND"),
+				"1000 GND":this.constructArrowHeightRow.bind(this,"umet","vmet",1000,"PAL_WIND"),
+				"Surface":this.constructArrowHeightRow.bind(this,"umet","vmet",0,"PAL_WIND"),
+				"BL Wind Shear":this.constructRow.bind(this,"blwindshear", "PAL_WIND")
 			},
 			"Thermals":{
 				"Velocity":this.constructRow.bind(this,"wstar", "PAL_THERMIQUES"),
@@ -74,33 +79,13 @@ function ForecastTable(coords, name){
 
 	
 	this.buildElement = function(day,data){
-		console.log(this);
+		console.log(data);
 		for(topic in this.tableElements){
 			var topicElements = this.tableElements[topic];
-			console.log(topicElements);
 			for(element in topicElements){
 				this.clearElement(this.table[topic][element][day]).appendChild(topicElements[element](data));
 			}
 		}
-		//console.log(this);
-		//this.clearElement(this.table["windMap"][day]).appendChild(this.constructWindMap(data));
-		//this.clearElement(this.table["cloudMap"][day]).appendChild(this.constructCloudMap(data));
-		//this.clearElement(this.table["raintot"][day]).appendChild(this.constructRow(data, "raintot", "PAL_RAIN"));
-	};
-	
-	this.addTableRow = function(tableElem, dates, name){
-		this.table[name] = {};
-		var trElem = document.createElement("TR");
-		trElem.style.padding="0px";
-		for(var i = 0; i < dates.length; i++){
-			var tdElem = document.createElement("TD");
-			tdElem.style.padding="0px";
-			tdElem.innerHTML="loading...";
-			var date = dates[i];
-			this.table[name][date] = tdElem;
-			trElem.appendChild(tdElem);
-		}
-		tableElem.appendChild(trElem);
 	};
 	
 	this.loadAsync = function(days){
@@ -198,10 +183,6 @@ function ForecastTable(coords, name){
 				tmpTable.appendChild(tr);
 			}
 		}
-		
-		//this.addTableRow(tmpTable, Object.keys(datesToLoad), "windMap");
-		//this.addTableRow(tmpTable, Object.keys(datesToLoad), "cloudMap");
-		//this.addTableRow(tmpTable, Object.keys(datesToLoad), "raintot");
 		
 		div.appendChild(tmpTable);
 		div.appendChild(ForecastDrawer.drawAllPallettes(500, 30));
