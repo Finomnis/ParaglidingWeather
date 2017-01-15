@@ -117,8 +117,8 @@ function ForecastTable(coords, name){
 		}
 	};
 	
-	this.createSpacer = function(numElements){
-		var spaceSize = "10px";
+	this.createSpacer = function(numElements, space){
+		var spaceSize = Math.round(space) + "px";
 		var spacer = document.createElement("TR");
 		spacer.style.border = "none";
 		spacer.style.height=spaceSize;
@@ -170,9 +170,9 @@ function ForecastTable(coords, name){
 			for(date in datesToLoad){
 				var th = document.createElement("TH");
 				th.style.border = "none";
-				var weekDays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-				var dateObj = new Date(date.substring(0,4),date.substring(4,6), date.substring(6,8));
-				th.innerHTML=weekDays[dateObj.getDay()] + ", " + dateObj.getDate();
+				var weekDays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+				var dateObj = new Date(date.substring(0,4),parseInt(date.substring(4,6))-1, date.substring(6,8));
+				th.innerHTML = weekDays[dateObj.getDay()] + ", " + dateObj.getDate();
 				tr.appendChild(th);
 				th.style.paddingBottom="10px";
 				
@@ -208,8 +208,13 @@ function ForecastTable(coords, name){
 		
 		// Table Topics
 		this.table = {};
+		
+		var firstSpace = 8;
+		var otherSpaces = 10;
 		for(topic in this.tableElements){
-			tmpTable.appendChild(this.createSpacer(Object.keys(datesToLoad).length));
+			tmpTable.appendChild(this.createSpacer(Object.keys(datesToLoad).length, firstSpace));
+			firstSpace=otherSpaces;
+			
 			this.table[topic] = {};
 			var topicElements = this.tableElements[topic];
 			var numSubElements = Object.keys(topicElements).length;
@@ -270,20 +275,3 @@ function ForecastTable(coords, name){
 	};
 }
 
-function ForecastTablesClass(){
-	
-	this.redraw = function(){
-		// get div
-		var forecastDiv = document.getElementById("forecastTables");
-		// clear div
-		while (forecastDiv.firstChild) {
-			forecastDiv.removeChild(forecastDiv.firstChild);
-		}
-		// TODO replace with generic and configurable
-		var table = new ForecastTable({lat: 49.5897, lon: 11.0120,}, "Erlangen");
-		var tableDiv = table.initialize();
-		forecastDiv.appendChild(tableDiv);
-	};
-}
-
-var ForecastTables = new ForecastTablesClass(); 

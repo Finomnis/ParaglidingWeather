@@ -24,13 +24,14 @@ function WeatherDataClass(){
 		});
 	};
 		
-	this.refreshAll = function(){
+	this.refreshAll = function(redrawCallback){
 		$.ajax({
 			url: "https://data0.meteo-parapente.com/status.php",
 			dataType: "jsonp",
-			success: $.proxy(function(data){
+			success: $.proxy(function(redrawCallback,data){
 				this.runDays = {};
 				this.domain = Object.keys(data)[0];
+				console.log(data);
 				data = data[this.domain];
 				var i;
 				var today = new Date();
@@ -63,8 +64,8 @@ function WeatherDataClass(){
 					if(found == false) break;
 				}
 				// After update, redraw the forecast tables
-				ForecastTables.redraw();
-			},this)
+				redrawCallback();
+			},this,redrawCallback)
 		});
 		
 	};
@@ -73,6 +74,3 @@ function WeatherDataClass(){
 
 var WeatherData = new WeatherDataClass();
 
-$(document).ready(function(){
-	WeatherData.refreshAll();
-});
