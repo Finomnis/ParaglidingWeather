@@ -57,6 +57,17 @@ function ForecastDrawerClass(){
 		return canvas;
 	};
 	
+	this.drawTimes = function(times){
+		var canvas = document.createElement("canvas");
+		canvas.width = times.length*this.columnWidth;
+		canvas.height = this.rowHeight;
+		canvas.style.border = "none";
+		var ctx = canvas.getContext("2d");
+		ctx.fillStyle = "rgb(255,0,255)";
+		ctx.fillRect(0,0,times.length*this.columnWidth,this.rowHeight);
+		return canvas;
+	};
+	
 	this.getInterpolatedHeightIndices = function(z, height){
 		var result = [];
 		result[0] = [0,1];
