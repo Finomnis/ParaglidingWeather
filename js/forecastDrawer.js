@@ -98,7 +98,7 @@ function ForecastDrawerClass(){
 		}	
 		return canvas;
 	};
-	
+	/*
 	this.drawTimes = function(times){
 		var canvas = document.createElement("canvas");
 		canvas.width = times.length*this.columnWidth;
@@ -115,6 +115,31 @@ function ForecastDrawerClass(){
 		//ctx.fillStyle = "rgb(255,255,255)";
 		//ctx.fillRect(0,0,times.length*this.columnWidth,this.rowHeight);
 		return canvas;
+	};
+	*/
+	
+	this.drawTimes = function(times){
+		var table = document.createElement("TABLE");
+		table.style.border = "none";
+		var tr = document.createElement("TR");
+		tr.style.border = "none";
+		
+		for(var i = 0; i < times.length; i++){
+			var td = document.createElement("TD");
+			td.style.border = "none";
+			td.style.padding = "0px";
+			td.minWidth = this.columnWidth;
+			td.maxWidth = this.columnWidth;
+			td.width = this.columnWidth;
+			var div = document.createElement("DIV");
+			div.style.textAlign="center";
+			div.style.fontSize="9.5px";
+			div.innerHTML = times[i];
+			td.appendChild(div);
+			tr.appendChild(td);
+		}
+		table.appendChild(tr);
+		return table;
 	};
 	
 	this.getInterpolatedHeightIndices = function(z, height){
