@@ -225,10 +225,11 @@ function ForecastTable(coords, name){
 				var th = document.createElement("TH");
 				th.style.border = "none";
 				th.style.backgroundColor = "#e0e0e0";
+				th.style.minWidth = "14px";
 				th.rowSpan=numSubElements+1;
 				var headerDiv = document.createElement("DIV");
 				headerDiv.className = "vertical";
-				headerDiv.innerHTML=topic + "<BR>";
+				headerDiv.innerHTML=topic;
 				
 				
 				th.appendChild(headerDiv);
