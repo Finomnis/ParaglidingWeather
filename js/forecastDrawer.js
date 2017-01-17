@@ -46,6 +46,8 @@ function ForecastDrawerClass(){
 	this.columnWidth  = 16;
 	this.rowHeight    = 16;
 	
+	this.overscale = 2;
+	
 	this.getNumEntries = function(data, targetHeight){
 		var heights = data[12].z;
 		var id;
@@ -57,16 +59,17 @@ function ForecastDrawerClass(){
 		return id;
 	};
 	
-	this.drawDataMap = function(data, maxHeight, getDataCallback, getColorCallback){
+	this.drawDataMap = function(data, maxHeight, getDataCallback, getColorCallback, cellWidth, cellHeight){
 	
 		var numHeights = this.getNumEntries(data, maxHeight);
 		
 		var numTimes = Object.keys(data).length;
 		
-		var canvas = document.createElement("canvas");
-		canvas.width = numTimes*this.columnWidth;
-		canvas.height = numHeights * this.mapPixelSize;
-		canvas.style.border = "none";
+		var canvas = this.createCanvas(numTimes*cellWidth, numHeights*cellHeight);
+		
+		var paintWidth = cellWidth * this.overscale;
+		var paintHeight = cellHeight * this.overscale;
+		
 		var ctx = canvas.getContext("2d");
 		
 		for(var i = 0; i < numTimes; i++){
@@ -74,27 +77,42 @@ function ForecastDrawerClass(){
 				var val = getDataCallback(data, Object.keys(data)[i], height);
 				var col = getColorCallback(val);
 				ctx.fillStyle = "rgb("+Math.round(col[0])+","+Math.round(col[1])+","+Math.round(col[2])+")";
-				ctx.fillRect(i*this.columnWidth,this.mapPixelSize*(numHeights-(height+1)),this.columnWidth,this.mapPixelSize);
+				ctx.fillRect(i*paintWidth,paintHeight*(numHeights-(height+1)),paintWidth,paintHeight);
 			}
 		}	
 		return canvas;
 	};
 	
-	this.drawColorLine = function(data, type, getColorCallback){
+	this.createCanvas = function(width, height){
+		var canvas = document.createElement("canvas");
+		canvas.width = width*this.overscale;
+		canvas.height = height*this.overscale;
+		canvas.style.border = "none";
+		canvas.style.width = width + "px";
+		canvas.style.minWidth = width + "px";
+		canvas.style.maxWidth = width + "px";
+		canvas.style.height = height + "px";
+		canvas.style.minHeight = height + "px";
+		canvas.style.maxHeight = height + "px";
+		return canvas;
+	};
+	
+	this.drawColorLine = function(data, type, getColorCallback, cellWidth, cellHeight){
 		
 		var numTimes = Object.keys(data).length;
 		
-		var canvas = document.createElement("canvas");
-		canvas.width = numTimes*this.columnWidth;
-		canvas.height = this.rowHeight;
-		canvas.style.border = "none";
+		var canvas = this.createCanvas(numTimes*cellWidth, cellHeight);
+		
+		var paintWidth = cellWidth * this.overscale;
+		var paintHeight = cellHeight * this.overscale;
+		
 		var ctx = canvas.getContext("2d");
 		
 		for(var i = 0; i < numTimes; i++){
 			var val = data[Object.keys(data)[i]][type];
 			var col = getColorCallback(val);
 			ctx.fillStyle = "rgb("+Math.round(col[0])+","+Math.round(col[1])+","+Math.round(col[2])+")";
-			ctx.fillRect(i*this.columnWidth,0,this.columnWidth,this.rowHeight);
+			ctx.fillRect(i*paintWidth,0,paintWidth,paintHeight);
 		}	
 		return canvas;
 	};
@@ -117,6 +135,12 @@ function ForecastDrawerClass(){
 		return canvas;
 	};
 	*/
+	
+	this.createLoader = function(){
+		var div = document.createElement("DIV");
+		div.className = "loader";
+		return div;
+	};
 	
 	this.drawTimes = function(times){
 		var table = document.createElement("TABLE");
@@ -176,10 +200,10 @@ function ForecastDrawerClass(){
 	this.drawArrow = function(ctx, dirX, dirY, posX, posY, width, height){
 		dirY = - dirY;
 		
-		var lineLength = 0.35*Math.min(width,height);
+		var lineLength = 0.31*Math.min(width,height);
 		var centerX = posX + width/2;
 		var centerY = posY + height/2;
-		ctx.lineWidth = 1;
+		ctx.lineWidth = this.overscale;
 		ctx.strokeStyle = "#000000";
 		ctx.fillStyle = "#000000";
 		ctx.beginPath();
@@ -187,28 +211,31 @@ function ForecastDrawerClass(){
 		ctx.lineTo(centerX+dirX*lineLength, centerY+dirY*lineLength);
 		ctx.stroke();
 		
-		var arrowBaseX = centerX+dirX*lineLength/8;
-		var arrowBaseY = centerY+dirY*lineLength/8;
-		var arrowBaseLength = lineLength/2.5;
+		var arrowBaseX = centerX+dirX*lineLength/3.5;
+		var arrowBaseY = centerY+dirY*lineLength/3.5;
+		var arrowBaseLength = lineLength/3.5;
 		
 		ctx.beginPath();
 		ctx.moveTo(arrowBaseX, arrowBaseY);
 		ctx.lineTo(arrowBaseX + arrowBaseLength*dirY, arrowBaseY - arrowBaseLength*dirX);
 		ctx.lineTo(centerX+dirX*lineLength, centerY+dirY*lineLength);
 		ctx.lineTo(arrowBaseX - arrowBaseLength*dirY, arrowBaseY + arrowBaseLength*dirX);
+		ctx.closePath();
 		ctx.fill();
+		ctx.stroke();
 	};
 	
-	this.drawColorArrowHeightLine = function(data, typeX, typeY, height, getColorCallback){
+	this.drawColorArrowHeightLine = function(data, typeX, typeY, height, getColorCallback, cellWidth, cellHeight){
 		
 		var numTimes = Object.keys(data).length;
 		
-		var canvas = document.createElement("canvas");
-		canvas.width = numTimes*this.columnWidth;
-		canvas.height = this.rowHeight;
-		canvas.style.border = "none";
+		var canvas = this.createCanvas(numTimes*cellWidth, cellHeight);
+		
+		var paintWidth = cellWidth * this.overscale;
+		var paintHeight = cellHeight * this.overscale;
+		
 		var ctx = canvas.getContext("2d");
-
+		
 		for(var i = 0; i < numTimes; i++){
 			var currentData = data[Object.keys(data)[i]];
 			var heightIndices = this.getInterpolatedHeightIndices(currentData["z"], height);
@@ -219,8 +246,8 @@ function ForecastDrawerClass(){
 			var dirY = valY/val;
 			var col = getColorCallback(val);
 			ctx.fillStyle = "rgb("+Math.round(col[0])+","+Math.round(col[1])+","+Math.round(col[2])+")";
-			ctx.fillRect(i*this.columnWidth,0,this.columnWidth,this.rowHeight);
-			this.drawArrow(ctx, dirX, dirY, i*this.columnWidth, 0, this.columnWidth, this.rowHeight);
+			ctx.fillRect(i*paintWidth,0,paintWidth,paintHeight);
+			this.drawArrow(ctx, dirX, dirY, i*paintWidth, 0, paintWidth, paintHeight);
 		}	
 		return canvas;
 	};

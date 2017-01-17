@@ -26,7 +26,7 @@ function ForecastTable(coords, name){
 										  function (data) {
 											  var gray = 100*data + 255*(1-data);
 											  return [gray,gray,gray];
-										  });
+										  }, 16, 3);
 	};
 		
 	this.constructWindMap = function(data){
@@ -37,17 +37,18 @@ function ForecastTable(coords, name){
 											  var vmet = data[time]["vmet"][height];
 											  return Math.sqrt(umet*umet+vmet*vmet);
 										  },
-										  Color.get.bind(Color, "PAL_WIND")
+										  Color.get.bind(Color, "PAL_WIND"),
+										  16, 3
 			);
 	};
 	
 	this.constructRow = function(type, colmap, data){
-		return ForecastDrawer.drawColorLine(data, type, Color.get.bind(Color,colmap));
+		return ForecastDrawer.drawColorLine(data, type, Color.get.bind(Color,colmap), 16, 16);
 	};
 	
 	this.constructArrowHeightRow = function(type1, type2, height, colmap, data){
 		var height0 = data[Object.keys(data)[0]]["ter"];
-		return ForecastDrawer.drawColorArrowHeightLine(data, type1, type2, height0 + height, Color.get.bind(Color,colmap));
+		return ForecastDrawer.drawColorArrowHeightLine(data, type1, type2, height0 + height, Color.get.bind(Color,colmap), 16, 16);
 	};
 	
 	this.tableElements = {
@@ -257,7 +258,9 @@ function ForecastTable(coords, name){
 					var td = document.createElement("TD");
 					td.style.border = "1px solid black";
 					td.style.padding = "0px";
-					td.innerHTML="Loading...";
+					td.align = "center";
+					td.appendChild(ForecastDrawer.createLoader());
+					//td.innerHTML="Loading...";
 					this.table[topic][element][date] = td;
 					tr.appendChild(td);
 				}				
