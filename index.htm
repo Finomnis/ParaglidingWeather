@@ -16,11 +16,31 @@
     <script src="js/forecastTable.js"></script>
     <script src="script.js"></script>
   </head>
+  
   <body>
-  	<h1 style="text-align: center">Paragliding Weather Forecasts</h1>
-    <h4 style="text-align: center">powered by <a href="https://meteo-parapente.com/">Météo Parapente</a></h4>
-    <div style="display: table; margin-right:auto; margin-left:auto;"> 
-    	<div id="forecastTables"></div>
+  	<div id="left_bar">
+  	</div>
+  	<div id="right_bar">
+  		<h1>Colortable</h1>
+  		<select name="hall" id="hall" value="3">
+		  <option>Wind</option>
+		  <option>Thermal Velocity</option>
+		  <option>B/S Ratio</option>
+		  <option>BL Top</option>
+		  <option>BL Vertical Motion</option>
+		</select>
+		
+  		
+  	</div>
+  	<div id="main">
+		<h1 style="text-align: center">Paragliding Weather Forecasts</h1>
+		<h4 style="text-align: center">powered by <a href="https://meteo-parapente.com/">Météo Parapente</a></h4>
+		<div style="display: table; margin-right:auto; margin-left:auto;">
+			<div id="forecastTables"></div>
+	  	</div>
+	  	<div id="right_arrow">
+	  		<div class="centered_text" id="right_arrow_text">&laquo;</div>
+	  	</div>
   	</div>
   </body>
 </html>

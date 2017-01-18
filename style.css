@@ -2,6 +2,7 @@ table, td, tr, th {
     border: 3px solid pink;
     border-collapse: collapse;
     table-layout: fixed;
+    white-space: nowrap;
 }
 
 div.vertical {
@@ -18,14 +19,17 @@ canvas {
 }
 
 
-/* loader */
+
+/********************************************
+ * LOADING SIGN
+ ********************************************/
 
 .loader {
   border: 3px solid #f3f3f3;
   border-radius: 50%;
   border-top: 3px solid #3498db;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
@@ -38,4 +42,69 @@ canvas {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/********************************************
+ * SIDEBAR RIGHT
+ ********************************************/
+ 
+ #main {
+ 	margin-right: 15%;
+    transition: margin-right 0.5s;
+ }
+ 
+ #right_bar {
+    height: 100%;
+    width: 15%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 0px;
+	padding-left: 0%;
+	padding-right: 0%;
+	font-family: Arial;
+	color: rgb(200,200,200);
+ }
+ 
+ #right_bar h1 {
+    font-size: 4vh;
+    text-align: center;
+    color: rgb(230,230,230);
+}
+
+#right_bar select {
+	position: absolute;
+	background: black;
+	color: rgb(200,200,200);
+	width: 90%;
+	left: 5%;
+	font-size: 2vh;
+	border: 1px solid rgb(100,100,100);
+}
+
+#right_arrow{
+	position: fixed;
+	right: 15%;
+	top: 42vh;
+	height: 16vh;
+	background-color: #111;
+	width: 2vh;
+	color: rgb(200,200,200);
+	border-top-left-radius:1vh;
+	border-bottom-left-radius:1vh;
+	font-size: 3vh;
+}
+
+.centered_text {
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  -ms-transform: translate(-50%, -60%);
+  border: none;
 }
