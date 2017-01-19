@@ -3,6 +3,7 @@
   - cloud height distribution with rain indicator on bottom
 - make color tables hideable
 - add places menu on the left
+- Foehn / algorithm to decide whether or not ot show it
 
 
   - tables:
