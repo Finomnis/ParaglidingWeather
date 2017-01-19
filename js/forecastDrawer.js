@@ -281,6 +281,9 @@ function ForecastDrawerClass(){
 			var colID = numColors-1-i;
 			
 			var tr = document.createElement("TR");
+			tr.style.height=(100/(numColors-1))+"%";
+			tr.style.minHeight=(100/(numColors-1))+"%";
+			tr.style.maxHeight=(100/(numColors-1))+"%";
 			tr.style.border = "none";
 			if(i == 0){
 				// PADDING
