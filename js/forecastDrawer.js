@@ -223,9 +223,33 @@ function ForecastDrawerClass(){
 		return div;
 	};
 	
+	this.preformatColorTable = function(colorPalette, name){
+		if(name === "PAL_CBASE"){
+			var res = [];
+			for(var i = 0; i < colorPalette.length; i++){
+				var entry = colorPalette[i].slice();
+				if(entry[0] < 0) continue;
+				entry[0] = 250*Math.round(entry[0]/250);
+				res.push(entry);
+			}
+			return res;
+		}
+		if(name === "PAL_WIND"){
+			var res = [];
+			for(var i = 0; i < colorPalette.length; i++){
+				var entry = colorPalette[i].slice();
+				if(entry[0] > 500)
+					entry[0] = 9001/3.6;
+				res.push(entry);
+			}
+			return res;
+		}
+		return colorPalette;
+	};
+	
 	this.drawColorTable = function(colorTableConfig, height){
-		
-		var colorPalette = Palettes[colorTableConfig[0]];
+				
+		var colorPalette = this.preformatColorTable(Palettes[colorTableConfig[0]], colorTableConfig[0]);
 		console.log(colorPalette);
 		var canvas = document.createElement("canvas");
 		var canvas_width = 2;
@@ -239,7 +263,7 @@ function ForecastDrawerClass(){
 			var ctx = canvas.getContext("2d");
 			
 			for(var y = 0; y < canvas_height; y++){
-				var colPos = (y/canvas_height)*(numColors-1);
+				var colPos = (1-y/(canvas_height-1))*(numColors-1);
 				var col = Color.getLinear(colorPalette, colPos);
 				ctx.fillStyle = "rgb("+col[0]+","+col[1]+","+col[2]+")";
 				ctx.fillRect(0,y,canvas_width,1);
@@ -251,6 +275,9 @@ function ForecastDrawerClass(){
 		table.style.height="100%";
 		table.style.border = "none";
 		for(var i = 0; i < numColors-1; i++){
+			
+			var colID = numColors-1-i;
+			
 			var tr = document.createElement("TR");
 			tr.style.border = "none";
 			if(i == 0){
@@ -295,7 +322,7 @@ function ForecastDrawerClass(){
 				var td = document.createElement("TD");
 				td.style.width="35%";
 				td.style.border="none";
-				td.style.padding="1px";
+				td.style.padding="0px";
 				
 				var container = document.createElement("div");
 				container.style.width="100%";
@@ -308,10 +335,10 @@ function ForecastDrawerClass(){
 					return Math.round( paletteEntry[0] * config[1] * 10 ) / 10;
 				};
 				
-				container.appendChild(this.createTransformedText(getColorValue(colorPalette[i],colorTableConfig), "translate(0%,-50%)", "0.5vh"));
+				container.appendChild(this.createTransformedText(getColorValue(colorPalette[colID],colorTableConfig), "translate(0%,-50%)", "0.5vh"));
 
 				if(i == numColors-2){
-					container.appendChild(this.createTransformedText(getColorValue(colorPalette[i+1],colorTableConfig), "translate(0%,50%)", "0.5vh"));
+					container.appendChild(this.createTransformedText(getColorValue(colorPalette[colID-1],colorTableConfig), "translate(0%,50%)", "0.5vh"));
 				}
 				
 				tr.appendChild(td);
