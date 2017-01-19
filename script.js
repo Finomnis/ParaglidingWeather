@@ -28,6 +28,22 @@ function ForecastTablesClass(){
 
 var ForecastTables = new ForecastTablesClass(); 
 
+function updateColorTable(){
+	
+	var colorTable_selection = document.getElementById("color_table_select");
+	var colorTableDiv = document.getElementById("colortable");
+	while (colorTableDiv.firstChild) {
+		colorTableDiv.removeChild(colorTableDiv.firstChild);
+	}
+	
+	colorTableDiv.appendChild(ForecastDrawer.drawColorTable(colorTable_selection.selectedIndex));
+	
+}
+
 $(document).ready(function(){
 	WeatherData.refreshAll(ForecastTables.redraw);
+});
+
+$(document).ready(function(){
+	updateColorTable();
 });

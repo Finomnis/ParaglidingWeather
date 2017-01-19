@@ -21,16 +21,21 @@
   	<div id="left_bar">
   	</div>
   	<div id="right_bar">
-  		<h1>Colortable</h1>
-  		<select name="hall" id="hall" value="3">
-		  <option>Wind</option>
-		  <option>Thermal Velocity</option>
-		  <option>B/S Ratio</option>
-		  <option>BL Top</option>
-		  <option>BL Vertical Motion</option>
-		</select>
-		
-  		
+  		<div class="header_wrapper">
+  			<h1>Colortable</h1>
+  		</div>
+  		<div class="selection_wrapper">
+	  		<select name="Table Type" id="color_table_select">
+			  <option value="wind" selected>Wind</option>
+			  <option value="thermal_vel">Thermal Velocity</option>
+			  <option value="b_s_ratio">B/S Ratio</option>
+			  <option value="bl_top">BL Top</option>
+			  <option value="bl_vmotion">BL Vertical Motion</option>
+			</select>
+		</div>
+		<div class="colortable_wrapper">
+	  		<div id="colortable"></div>
+	  	</div>
   	</div>
   	<div id="main">
 		<h1 style="text-align: center">Paragliding Weather Forecasts</h1>

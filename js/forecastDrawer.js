@@ -166,6 +166,20 @@ function ForecastDrawerClass(){
 		return table;
 	};
 	
+	this.drawColorTable = function(name){
+		var table = document.createElement("TABLE");
+		table.style.width="100%";
+		var tr = document.createElement("TR");
+		/*tr.style.width="100%";*/
+		var td = document.createElement("TD");
+		td.innerHTML="TEST " + name;
+		td.style.height="100px";
+		/*td.style.width="100%";*/
+		tr.appendChild(td);
+		table.appendChild(tr);
+		return table;
+	};
+	
 	this.getInterpolatedHeightIndices = function(z, height){
 		var result = [];
 		result[0] = [0,1];
