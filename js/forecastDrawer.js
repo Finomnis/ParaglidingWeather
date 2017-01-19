@@ -2,8 +2,8 @@ function ColorClass(){
 	this.get = function(colTable, val){
 		//console.log(Palettes);
 		var palette = Palettes[colTable];
-		if(palette[0] > val){
-			return [palette[1],palette[2],palette[3]];
+		if(palette[0] >= val){
+			return [palette[0][1],palette[0][2],palette[0][3]];
 		}
 		
 		var col_0 = palette[0];
@@ -17,7 +17,7 @@ function ColorClass(){
 				break;
 			}
 		}
-		if(col_1[0] < val){
+		if(col_1[0] <= val){
 			return [col_1[1],col_1[2],col_1[3]];
 		}
 		
@@ -28,6 +28,37 @@ function ColorClass(){
 		
 		var weight_1 = (val - val_0) / val_dist;
 		var weight_0 = (val_1 - val) / val_dist;
+		
+		return [
+		    Math.round(col_0[1] * weight_0 + col_1[1]*weight_1),
+		    Math.round(col_0[2] * weight_0 + col_1[2]*weight_1),
+		    Math.round(col_0[3] * weight_0 + col_1[3]*weight_1)
+		];
+	};
+	this.getLinear = function(palette, val){
+		//console.log(Palettes);
+		if(val <= 0){
+			return [palette[0][1],palette[0][2],palette[0][3]];
+		}
+		if(val >= palette.length - 1){
+			var col = palette[palette.length - 1];
+			return [col[1],col[2],col[3]];
+		}
+		
+		var i = 0;
+		while(val >= i) i++;
+		
+		var col_0 = palette[i];
+		var col_1 = palette[i-1];
+		
+		
+		var val_0 = i-1;
+		var val_1 = i;
+		
+		var val_dist = val_1 - val_0;
+		
+		var weight_0 = (val - val_0) / val_dist;
+		var weight_1 = (val_1 - val) / val_dist;
 		
 		return [
 		    Math.round(col_0[1] * weight_0 + col_1[1]*weight_1),
@@ -166,17 +197,127 @@ function ForecastDrawerClass(){
 		return table;
 	};
 	
-	this.drawColorTable = function(name){
+
+	
+	this.createTransformedText = function(text, trans, paddingLeft){
+		var div = document.createElement("div");
+		div.style.width="100%";
+		div.style.height="100%";
+		div.style.top="0";
+		div.style.bottom="0";
+		div.style.right="0";
+		div.style.left="0";
+		//div.style.backgroundColor="blue";
+		div.style.textAlign="left";
+		div.style.position="absolute";
+		div.style.display="table";
+		
+		var span = document.createElement("span");
+		span.style.verticalAlign="middle";
+		//span.style.backgroundColor="purple";
+		span.style.paddingLeft=paddingLeft;
+		span.style.display="table-cell";
+		span.style.transform = trans;
+		span.innerHTML=text;
+		div.appendChild(span);
+		return div;
+	};
+	
+	this.drawColorTable = function(colorTableConfig, height){
+		
+		var colorPalette = Palettes[colorTableConfig[0]];
+		console.log(colorPalette);
+		var canvas = document.createElement("canvas");
+		var canvas_width = 2;
+		var canvas_height = 100;
+		canvas.width = canvas_width;
+		canvas.height = canvas_height;
+		
+		var numColors = colorPalette.length;
+		
+		{
+			var ctx = canvas.getContext("2d");
+			
+			for(var y = 0; y < canvas_height; y++){
+				var colPos = (y/canvas_height)*(numColors-1);
+				var col = Color.getLinear(colorPalette, colPos);
+				ctx.fillStyle = "rgb("+col[0]+","+col[1]+","+col[2]+")";
+				ctx.fillRect(0,y,canvas_width,1);
+			}
+		}
+		
 		var table = document.createElement("TABLE");
 		table.style.width="100%";
-		var tr = document.createElement("TR");
-		/*tr.style.width="100%";*/
-		var td = document.createElement("TD");
-		td.innerHTML="TEST " + name;
-		td.style.height="100px";
-		/*td.style.width="100%";*/
-		tr.appendChild(td);
-		table.appendChild(tr);
+		table.style.height="100%";
+		table.style.border = "none";
+		for(var i = 0; i < numColors-1; i++){
+			var tr = document.createElement("TR");
+			tr.style.border = "none";
+			if(i == 0){
+				// PADDING
+				{
+					var td = document.createElement("TD");
+					td.style.width="15%";
+					td.style.border="none";
+					td.rowSpan = numColors-1;
+					tr.appendChild(td);
+				}
+				// COLOR SCALE
+				{
+					var td = document.createElement("TD");
+					td.style.width="30%";
+					td.style.padding="0px";
+					td.style.border="none";
+					td.rowSpan = numColors-1;
+					
+					canvas.style.width="100%";
+					canvas.style.maxWidth="100%";
+					canvas.style.height=height;
+					canvas.style.maxHeight=height;
+					td.appendChild(canvas);
+					
+					tr.appendChild(td);
+				}
+				table.appendChild(tr);
+			}
+			
+			// LINES
+			{
+				var td = document.createElement("TD");
+				td.style.width="20%";
+				td.style.border="none";
+				td.style.borderTop="1px solid rgb(200,200,200)";
+				td.style.borderBottom="1px solid rgb(200,200,200)";
+				tr.appendChild(td);
+			}
+			// NUMBERS
+			{
+				var td = document.createElement("TD");
+				td.style.width="35%";
+				td.style.border="none";
+				td.style.padding="1px";
+				
+				var container = document.createElement("div");
+				container.style.width="100%";
+				container.style.height="100%";
+				container.style.position="relative";
+				//container.style.backgroundColor="red";
+				td.appendChild(container);
+				
+				var getColorValue = function(paletteEntry, config){
+					return Math.round( paletteEntry[0] * config[1] * 10 ) / 10;
+				};
+				
+				container.appendChild(this.createTransformedText(getColorValue(colorPalette[i],colorTableConfig), "translate(0%,-50%)", "0.5vh"));
+
+				if(i == numColors-2){
+					container.appendChild(this.createTransformedText(getColorValue(colorPalette[i+1],colorTableConfig), "translate(0%,50%)", "0.5vh"));
+				}
+				
+				tr.appendChild(td);
+			}
+			table.appendChild(tr);
+		}
 		return table;
 	};
 	

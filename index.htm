@@ -22,10 +22,10 @@
   	</div>
   	<div id="right_bar">
   		<div class="header_wrapper">
-  			<h1>Colortable</h1>
+  			<h1>Colortables</h1>
   		</div>
   		<div class="selection_wrapper">
-	  		<select name="Table Type" id="color_table_select">
+	  		<select name="Table Type" id="color_table_select" onchange="updateColorTable()">
 			  <option value="wind" selected>Wind</option>
 			  <option value="thermal_vel">Thermal Velocity</option>
 			  <option value="b_s_ratio">B/S Ratio</option>
@@ -34,6 +34,9 @@
 			</select>
 		</div>
 		<div class="colortable_wrapper">
+			<div id="unit_label">
+			Unit: ERROR
+			</div>
 	  		<div id="colortable"></div>
 	  	</div>
   	</div>
