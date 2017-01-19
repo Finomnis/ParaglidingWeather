@@ -1,14 +1,13 @@
-- Mouse over / Split, to display values. better: split (to rearrange main window) with invisible border, and looks like side popup
-- Increase resolution and scale down
-- pop-up on right click?
-possible solution:
-  - button on right side that displays all color tables
+- on click (wind height distr., clouds) open one of two detailed images:
+  - wind height distribution, with values and heights
+  - cloud height distribution with rain indicator on bottom
+- make color tables hideable
+- add places menu on the left
+
+
   - tables:
     - rain
     - therm. vel.
     - b/s-ratio
     - bl top
     - bl vert. motion
-  - on click (wind height distr., clouds) open one of two detailed images:
-    - wind height distribution, with values and heights
-    - cloud height distribution with rain indicator on bottom

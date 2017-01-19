@@ -238,8 +238,10 @@ function ForecastDrawerClass(){
 			var res = [];
 			for(var i = 0; i < colorPalette.length; i++){
 				var entry = colorPalette[i].slice();
-				if(entry[0] > 500)
+				if(entry[0] > 500){
 					entry[0] = 9001/3.6;
+					continue;
+				}
 				res.push(entry);
 			}
 			return res;
