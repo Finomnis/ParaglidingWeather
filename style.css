@@ -60,7 +60,7 @@ canvas, div {
  ********************************************/
  
  #main {
- 	margin-right: 25vh;
+ 	margin-right: 0vh;
     transition: margin-right 0.5s;
  }
  
@@ -70,10 +70,11 @@ canvas, div {
     position: fixed;
     z-index: 1;
     top: 0;
-    right: 0vh;
+    right: -25vh;
+    margin-right: 0vh;
     background-color: #111;
     overflow-x: hidden;
-    transition: width 0.5s;
+    transition: margin-right 0.5s;
     padding-top: 0px;
 	padding-left: 0%;
 	padding-right: 0%;
@@ -98,10 +99,11 @@ canvas, div {
 	border: 1px solid rgb(100,100,100);
 }
 
-#right_arrow{
+#rightSidebarButton{
+	z-index: 1;
 	position: fixed;
-	right: 25vh;
-	margin-right: -0.5vh;
+	right: -0.5vh;
+	margin-right: 0vh;
 	top: 42vh;
 	height: 16vh;
 	background-color: #111;
@@ -110,7 +112,7 @@ canvas, div {
 	border-top-left-radius:1vh;
 	border-bottom-left-radius:1vh;
 	font-size: 3vh;
-    transition: right 0.5s;
+    transition: margin-right 0.5s;
 }
 
 .centered_text {
@@ -124,7 +126,13 @@ canvas, div {
 }
 
 
-
+.sidebutton {
+	 -moz-user-select: none;
+	 -webkit-user-select: none;
+	 -ms-user-select:none;
+	 user-select:none;
+	 -o-user-select:none;
+}
 
 #right_bar .header_wrapper {
 	position: absolute;
@@ -178,9 +186,9 @@ canvas, div {
   /*background-color: gray;*/
   display: table;
   position: absolute;
-  bottom:0%;
+  bottom:3%;
   left: 10%;
-  height: 96%;
+  height: 90%;
   width: 80%;
   border: none;
 }

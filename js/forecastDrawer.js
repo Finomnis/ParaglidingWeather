@@ -227,8 +227,6 @@ function ForecastDrawerClass(){
 	this.drawColorTable = function(colorPalette, prefactor, div){
 	
 		
-		//console.log(colorPalette);
-		
 		while (div.firstChild) {
 			div.removeChild(div.firstChild);
 		}
@@ -238,8 +236,8 @@ function ForecastDrawerClass(){
 		var canvas = document.createElement("canvas");
 		var canvas_width = Math.round(clientRect.width);
 		var canvas_height = Math.round(clientRect.height);
-		var inner_height = Math.round(canvas_height * 86/96);
-		var inner_offset = Math.round(canvas_height * 5/96);
+		var inner_height = Math.round(canvas_height * 86/90);
+		var inner_offset = Math.round(canvas_height * 2/90);
 		canvas.width = canvas_width;
 		canvas.height = canvas_height;
 		var ctx = canvas.getContext("2d");
@@ -279,100 +277,7 @@ function ForecastDrawerClass(){
 		}
 		
 		div.appendChild(canvas);
-		/*
-		var numColors = colorPalette.length;
 		
-		{
-			var ctx = canvas.getContext("2d");
-			
-			for(var y = 0; y < canvas_height; y++){
-				var colPos = (1-y/(canvas_height-1))*(numColors-1);
-				var col = Color.getLinear(colorPalette, colPos);
-				ctx.fillStyle = "rgb("+col[0]+","+col[1]+","+col[2]+")";
-				ctx.fillRect(0,y,canvas_width,1);
-			}
-		}
-		
-		var table = document.createElement("TABLE");
-		table.style.width="100%";
-		table.style.height="100%";
-		table.style.border = "none";
-		for(var i = 0; i < numColors-1; i++){
-			
-			var colID = numColors-1-i;
-			
-			var tr = document.createElement("TR");
-			//tr.style.height=(100/(numColors-1))+"%";
-			//tr.style.minHeight=(100/(numColors-1))+"%";
-			//tr.style.maxHeight=(100/(numColors-1))+"%";
-			tr.style.border = "none";
-			if(i == 0){
-				// PADDING
-				{
-					var td = document.createElement("TD");
-					td.style.width="15%";
-					td.style.border="none";
-					td.rowSpan = numColors-1;
-					tr.appendChild(td);
-				}
-				// COLOR SCALE
-				{
-					var td = document.createElement("TD");
-					td.style.width="30%";
-					td.style.padding="0px";
-					td.style.border="none";
-					td.rowSpan = numColors-1;
-					
-					//canvas.style.width="100%";
-					//canvas.style.maxWidth="100%";
-					canvas.style.height="100%";
-					canvas.style.minHeight="100%";
-					//canvas.style.maxHeight="100%";
-					//td.appendChild(canvas);
-					td.style.backgroundColor="blue";
-					tr.appendChild(td);
-				}
-				table.appendChild(tr);
-			}
-			
-			// LINES
-			{
-				var td = document.createElement("TD");
-				td.style.width="20%";
-				td.style.border="none";
-				td.style.borderTop="1px solid rgb(200,200,200)";
-				td.style.borderBottom="1px solid rgb(200,200,200)";
-				tr.appendChild(td);
-			}
-			// NUMBERS
-			{
-				var td = document.createElement("TD");
-				td.style.width="35%";
-				td.style.border="none";
-				td.style.padding="0px";
-				
-				var container = document.createElement("div");
-				container.style.width="100%";
-				//container.style.height="100%";
-				container.style.position="relative";
-				//container.style.backgroundColor="red";
-				td.appendChild(container);
-				
-				var getColorValue = function(paletteEntry, config){
-					return Math.round( paletteEntry[0] * config[1] * 10 ) / 10;
-				};
-				
-				container.appendChild(this.createTransformedText(getColorValue(colorPalette[colID],colorTableConfig), "translate(0%,-50%)", "0.5vh"));
-
-				if(i == numColors-2){
-					container.appendChild(this.createTransformedText(getColorValue(colorPalette[colID-1],colorTableConfig), "translate(0%,50%)", "0.5vh"));
-				}
-				
-				tr.appendChild(td);
-			}
-			table.appendChild(tr);
-		}
-		return table;*/
 	};
 	
 	this.getInterpolatedHeightIndices = function(z, height){
