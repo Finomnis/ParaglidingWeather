@@ -1,6 +1,6 @@
 function ForecastTable(coords, name){
 	
-	this.time_points = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21];
+	this.time_points = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
 	this.windMapMaxHeight = 4000;
 	this.cloudMapMaxHeight = 5000;
 	
@@ -199,7 +199,7 @@ function ForecastTable(coords, name){
 				td.style.borderLeft = "1px solid black";
 				td.style.borderRight = "1px solid black";
 				td.style.padding = "0px";
-				td.appendChild(ForecastDrawer.drawTimes(this.time_points));
+				td.appendChild(ForecastDrawer.drawTimes(this.time_points, WeatherData.timezoneOffset));
 				tr.appendChild(td);
 				
 			}

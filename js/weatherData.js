@@ -3,6 +3,7 @@ function WeatherDataClass(){
 	this.runDays = {};
 	this.today = "";
 	this.domain = "";
+	this.timezoneOffset = 0;
 	
 	this.fetchData = function(coords, day, hours, params, callback){
 		var runDay = this.runDays[day];
@@ -35,6 +36,7 @@ function WeatherDataClass(){
 				data = data[this.domain];
 				var i;
 				var today = new Date();
+				this.timezoneOffset = -Math.round(today.getTimezoneOffset()/60);
 				var getDate = function(today, offset){
 					var date =  new Date(today.getTime() + offset * 24 * 60 * 60 * 1000);
 					var month = (date.getMonth()+1).toString();

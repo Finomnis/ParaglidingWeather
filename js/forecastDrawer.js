@@ -173,7 +173,7 @@ function ForecastDrawerClass(){
 		return div;
 	};
 	
-	this.drawTimes = function(times){
+	this.drawTimes = function(times, offset){
 		var table = document.createElement("TABLE");
 		table.style.border = "none";
 		var tr = document.createElement("TR");
@@ -189,7 +189,7 @@ function ForecastDrawerClass(){
 			var div = document.createElement("DIV");
 			div.style.textAlign="center";
 			div.style.fontSize="9.5px";
-			div.innerHTML = times[i];
+			div.innerHTML = times[i] + offset;
 			td.appendChild(div);
 			tr.appendChild(td);
 		}

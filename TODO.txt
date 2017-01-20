@@ -1,9 +1,7 @@
 
 TOP PRIORITY:
-- replace tables with canvas
-
-
-- maybe rework sidebar? (flex)
+Defaults Page (for us), and SEARCH BAR
+https://maps.googleapis.com/maps/api/geocode/json?address=
 
 - on click (wind height distr., clouds) open one of two detailed images:
   - wind height distribution, with values and heights
