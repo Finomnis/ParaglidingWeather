@@ -238,6 +238,8 @@ function ForecastDrawerClass(){
 		var canvas = document.createElement("canvas");
 		var canvas_width = Math.round(clientRect.width);
 		var canvas_height = Math.round(clientRect.height);
+		var inner_height = Math.round(canvas_height * 86/96);
+		var inner_offset = Math.round(canvas_height * 5/96);
 		canvas.width = canvas_width;
 		canvas.height = canvas_height;
 		var ctx = canvas.getContext("2d");
@@ -251,13 +253,13 @@ function ForecastDrawerClass(){
 		var fontSize = canvas_width * 0.08;
 		
 		// create colors
-		var my_gradient=ctx.createLinearGradient(0,0,0,canvas_height);
+		var my_gradient=ctx.createLinearGradient(0,inner_offset,0,inner_offset+inner_height);
 		for(var i = 0; i < colorPalette.length; i++){
 			var col = colorPalette[i];
 			my_gradient.addColorStop(1-i/(colorPalette.length - 1), "rgb(" + Math.round(col[1]) + "," + Math.round(col[2]) + "," + Math.round(col[3])+ ")");
 		}
 		ctx.fillStyle=my_gradient;
-		ctx.fillRect(offset_width,0,colors_width,canvas_height);
+		ctx.fillRect(offset_width,inner_offset,colors_width,inner_height);
 
 		// create lines and numbers
 		ctx.fillStyle = "rgb(200,200,200)";
@@ -269,7 +271,7 @@ function ForecastDrawerClass(){
 		for(var i = 0; i < colorPalette.length; i++){
 			var val = Math.round(colorPalette[colorPalette.length - 1 - i][0] * prefactor * 10) / 10;
 			ctx.beginPath();
-			var pos = Math.round((canvas_height-1)*i/(colorPalette.length-1)) + 0.5;
+			var pos = Math.round(inner_offset + (inner_height-1)*i/(colorPalette.length-1)) + 0.5;
 			ctx.moveTo(offset_width + colors_width, pos);
 			ctx.lineTo(offset_width + colors_width + lines_width, pos);
 			ctx.stroke();
