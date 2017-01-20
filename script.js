@@ -28,41 +28,82 @@ function ForecastTablesClass(){
 
 var ForecastTables = new ForecastTablesClass(); 
 
-function updateColorTable(){
-	
-	var availableColorTables = {
-			"wind": ["PAL_WIND", 3.6, "km/h"],
-			"thermal_vel": ["PAL_THERMIQUES", 1, "m/s"],
-			"b_s_ratio": ["PAL_BSRATIO", 1, null],
-			"bl_top": ["PAL_CBASE", 1, "m"],
-			"bl_vmotion": ["PAL_CONVERGENCE", 0.01, "m/s"]
-		};
-	
-	
-	var colorTable_selection = document.getElementById("color_table_select");
-	var colorTableDiv = document.getElementById("colortable");
-	while (colorTableDiv.firstChild) {
-		colorTableDiv.removeChild(colorTableDiv.firstChild);
-	}
-	
-	
-	var colorTableConfig = availableColorTables[colorTable_selection.value];
-	
+function ColorTableSliderClass(){
 
+	this.currentTable = Palettes["PAL_WIND"];
+	this.currentPrefactor = 1;
 	
-	colorTableDiv.appendChild(ForecastDrawer.drawColorTable(colorTableConfig, "75vh"));
-	var colorTableUnitLabel = document.getElementById("unit_label");
-	if(colorTableConfig[2]){
-		colorTableUnitLabel.innerHTML="Unit: " + colorTableConfig[2];
-	} else {
-		colorTableUnitLabel.innerHTML="no Unit";
-	}
+	this.preformatColorTable = function(colorPalette, name){
+		if(name === "PAL_CBASE"){
+			var res = [];
+			for(var i = 0; i < colorPalette.length; i++){
+				var entry = colorPalette[i].slice();
+				if(entry[0] < 0) continue;
+				entry[0] = 250*Math.round(entry[0]/250);
+				res.push(entry);
+			}
+			return res;
+		}
+		if(name === "PAL_WIND"){
+			var res = [];
+			for(var i = 0; i < colorPalette.length; i++){
+				var entry = colorPalette[i].slice();
+				if(entry[0] > 500){
+					entry[0] = 9001/3.6;
+					continue;
+				}
+				res.push(entry);
+			}
+			return res;
+		}
+		return colorPalette;
+	};
+
+	this.redrawColorTable = function(){
+		
+		ForecastDrawer.drawColorTable(this.currentTable, this.currentPrefactor, document.getElementById("colortable"));
+		
+	};
+	
+	this.updateColorTable = function(){
+
+		var availableColorTables = {
+				"wind": ["PAL_WIND", 3.6, "km/h"],
+				"thermal_vel": ["PAL_THERMIQUES", 1, "m/s"],
+				"b_s_ratio": ["PAL_BSRATIO", 1, null],
+				"bl_top": ["PAL_CBASE", 1, "m"],
+				"bl_vmotion": ["PAL_CONVERGENCE", 0.01, "m/s"]
+			};
+		
+		
+		var colorTable_selection = document.getElementById("color_table_select");
+		
+		var colorTableConfig = availableColorTables[colorTable_selection.value];
+		
+		this.currentTable = this.preformatColorTable(Palettes[colorTableConfig[0]], colorTableConfig[0]);
+		this.currentPrefactor = colorTableConfig[1];
+		this.redrawColorTable();
+		
+		var colorTableUnitLabel = document.getElementById("unit_label");
+		if(colorTableConfig[2]){
+			colorTableUnitLabel.innerHTML="Unit: " + colorTableConfig[2];
+		} else {
+			colorTableUnitLabel.innerHTML="no Unit";
+		}
+	};
+	
 }
+
+var ColorTableSlider = new ColorTableSliderClass();
 
 $(document).ready(function(){
 	WeatherData.refreshAll(ForecastTables.redraw);
 });
 
 $(document).ready(function(){
-	updateColorTable();
+	ColorTableSlider.updateColorTable();
 });
+
+window.onresize = function(){
+	ColorTableSlider.redrawColorTable();
+};

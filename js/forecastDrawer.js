@@ -223,42 +223,61 @@ function ForecastDrawerClass(){
 		return div;
 	};
 	
-	this.preformatColorTable = function(colorPalette, name){
-		if(name === "PAL_CBASE"){
-			var res = [];
-			for(var i = 0; i < colorPalette.length; i++){
-				var entry = colorPalette[i].slice();
-				if(entry[0] < 0) continue;
-				entry[0] = 250*Math.round(entry[0]/250);
-				res.push(entry);
-			}
-			return res;
-		}
-		if(name === "PAL_WIND"){
-			var res = [];
-			for(var i = 0; i < colorPalette.length; i++){
-				var entry = colorPalette[i].slice();
-				if(entry[0] > 500){
-					entry[0] = 9001/3.6;
-					continue;
-				}
-				res.push(entry);
-			}
-			return res;
-		}
-		return colorPalette;
-	};
 	
-	this.drawColorTable = function(colorTableConfig, height){
-				
-		var colorPalette = this.preformatColorTable(Palettes[colorTableConfig[0]], colorTableConfig[0]);
-		console.log(colorPalette);
+	this.drawColorTable = function(colorPalette, prefactor, div){
+	
+		
+		//console.log(colorPalette);
+		
+		while (div.firstChild) {
+			div.removeChild(div.firstChild);
+		}
+		
+		var clientRect = div.getBoundingClientRect();
+		
 		var canvas = document.createElement("canvas");
-		var canvas_width = 2;
-		var canvas_height = 100;
+		var canvas_width = Math.round(clientRect.width);
+		var canvas_height = Math.round(clientRect.height);
 		canvas.width = canvas_width;
 		canvas.height = canvas_height;
+		var ctx = canvas.getContext("2d");
 		
+		canvas.style.position="absolute";
+		
+		var offset_width = canvas_width * 0.15;
+		var colors_width = canvas_width * 0.3;
+		var lines_width = canvas_width * 0.2;
+		var text_offset = canvas_width * 0.05;
+		var fontSize = canvas_width * 0.08;
+		
+		// create colors
+		var my_gradient=ctx.createLinearGradient(0,0,0,canvas_height);
+		for(var i = 0; i < colorPalette.length; i++){
+			var col = colorPalette[i];
+			my_gradient.addColorStop(1-i/(colorPalette.length - 1), "rgb(" + Math.round(col[1]) + "," + Math.round(col[2]) + "," + Math.round(col[3])+ ")");
+		}
+		ctx.fillStyle=my_gradient;
+		ctx.fillRect(offset_width,0,colors_width,canvas_height);
+
+		// create lines and numbers
+		ctx.fillStyle = "rgb(200,200,200)";
+		ctx.strokeStyle = "rgb(200,200,200)";
+		ctx.font = fontSize + "px Arial";
+		ctx.textAlign="left";
+		ctx.textBaseline="middle"; 
+		ctx.lineWidth = 0;
+		for(var i = 0; i < colorPalette.length; i++){
+			var val = Math.round(colorPalette[colorPalette.length - 1 - i][0] * prefactor * 10) / 10;
+			ctx.beginPath();
+			var pos = Math.round((canvas_height-1)*i/(colorPalette.length-1)) + 0.5;
+			ctx.moveTo(offset_width + colors_width, pos);
+			ctx.lineTo(offset_width + colors_width + lines_width, pos);
+			ctx.stroke();
+			ctx.fillText(val,offset_width + colors_width + lines_width + text_offset,pos);
+		}
+		
+		div.appendChild(canvas);
+		/*
 		var numColors = colorPalette.length;
 		
 		{
@@ -281,9 +300,9 @@ function ForecastDrawerClass(){
 			var colID = numColors-1-i;
 			
 			var tr = document.createElement("TR");
-			tr.style.height=(100/(numColors-1))+"%";
-			tr.style.minHeight=(100/(numColors-1))+"%";
-			tr.style.maxHeight=(100/(numColors-1))+"%";
+			//tr.style.height=(100/(numColors-1))+"%";
+			//tr.style.minHeight=(100/(numColors-1))+"%";
+			//tr.style.maxHeight=(100/(numColors-1))+"%";
 			tr.style.border = "none";
 			if(i == 0){
 				// PADDING
@@ -302,12 +321,13 @@ function ForecastDrawerClass(){
 					td.style.border="none";
 					td.rowSpan = numColors-1;
 					
-					canvas.style.width="100%";
-					canvas.style.maxWidth="100%";
-					canvas.style.height=height;
-					canvas.style.maxHeight=height;
-					td.appendChild(canvas);
-					
+					//canvas.style.width="100%";
+					//canvas.style.maxWidth="100%";
+					canvas.style.height="100%";
+					canvas.style.minHeight="100%";
+					//canvas.style.maxHeight="100%";
+					//td.appendChild(canvas);
+					td.style.backgroundColor="blue";
 					tr.appendChild(td);
 				}
 				table.appendChild(tr);
@@ -331,7 +351,7 @@ function ForecastDrawerClass(){
 				
 				var container = document.createElement("div");
 				container.style.width="100%";
-				container.style.height="100%";
+				//container.style.height="100%";
 				container.style.position="relative";
 				//container.style.backgroundColor="red";
 				td.appendChild(container);
@@ -350,7 +370,7 @@ function ForecastDrawerClass(){
 			}
 			table.appendChild(tr);
 		}
-		return table;
+		return table;*/
 	};
 	
 	this.getInterpolatedHeightIndices = function(z, height){

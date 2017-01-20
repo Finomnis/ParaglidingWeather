@@ -1,3 +1,10 @@
+
+TOP PRIORITY:
+- replace tables with canvas
+
+
+- maybe rework sidebar? (flex)
+
 - on click (wind height distr., clouds) open one of two detailed images:
   - wind height distribution, with values and heights
   - cloud height distribution with rain indicator on bottom

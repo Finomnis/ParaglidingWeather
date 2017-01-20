@@ -21,23 +21,25 @@
   	<div id="left_bar">
   	</div>
   	<div id="right_bar">
-  		<div class="header_wrapper">
-  			<h1>Colortables</h1>
-  		</div>
-  		<div class="selection_wrapper">
-	  		<select name="Table Type" id="color_table_select" onchange="updateColorTable()">
-			  <option value="wind" selected>Wind</option>
-			  <option value="thermal_vel">Thermal Velocity</option>
-			  <option value="b_s_ratio">B/S Ratio</option>
-			  <option value="bl_top">BL Top</option>
-			  <option value="bl_vmotion">BL Vertical Motion</option>
-			</select>
-		</div>
-		<div class="colortable_wrapper">
-			<div id="unit_label">
-			Unit: ERROR
+  		<div class="content_wrapper">
+	  		<div class="header_wrapper">
+	  			<h1>Colortables</h1>
+	  		</div>
+	  		<div class="selection_wrapper">
+		  		<select name="Table Type" id="color_table_select" onchange="ColorTableSlider.updateColorTable()">
+				  <option value="wind" selected>Wind</option>
+				  <option value="thermal_vel">Thermal Velocity</option>
+				  <option value="b_s_ratio">B/S Ratio</option>
+				  <option value="bl_top">BL Top</option>
+				  <option value="bl_vmotion">BL Vertical Motion</option>
+				</select>
 			</div>
-	  		<div id="colortable"></div>
+			<div class="colortable_wrapper">
+				<div id="unit_label">
+				Unit: ERROR
+				</div>
+		  		<div id="colortable"></div>
+		  	</div>
 	  	</div>
   	</div>
   	<div id="main">
