@@ -1,9 +1,9 @@
 var locations = {
 		"K&ouml;ssen":[47.654033, 12.420704],
 		"Siegritz":[49.855715, 11.220393],
-		
 };
 
+var URLObject = new urlObject();
 
 function ForecastTablesClass(){
 
@@ -112,7 +112,22 @@ function openRightSidebar(){
 
 var ColorTableSlider = new ColorTableSliderClass();
 
+function URLCoderClass(){
+	this.encodeBase64 = function(obj){
+		return Base64.encodeURI(JSON.stringify(obj));
+	};
+	
+	this.decodeBase64 = function(str){
+		return JSON.parse(Base64.decode(str));
+	};
+}
+
+var URLCoder = new URLCoderClass();
+
 $(document).ready(function(){
+	if(URLObject.parameters.locations){
+		locations = URLCoder.decodeBase64(URLObject.parameters.locations);
+	}		
 	WeatherData.refreshAll(ForecastTables.redraw);
 });
 
