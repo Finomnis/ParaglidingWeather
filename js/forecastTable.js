@@ -205,7 +205,7 @@ function ForecastTable(coords, name){
 				td.style.borderLeft = "1px solid black";
 				td.style.borderRight = "1px solid black";
 				td.style.padding = "0px";
-				td.appendChild(ForecastDrawer.drawTimes(this.time_points, WeatherData.timezoneOffset));
+				//td.appendChild(ForecastDrawer.drawTimes(this.time_points, WeatherData.timezoneOffset));
 				tr.appendChild(td);
 				
 			}
