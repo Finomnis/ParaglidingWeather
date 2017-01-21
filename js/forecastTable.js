@@ -259,6 +259,7 @@ function ForecastTable(coords, name){
 					var td = document.createElement("TD");
 					td.style.border = "1px solid black";
 					td.style.padding = "0px";
+					td.style.width="300px";
 					td.align = "center";
 					td.appendChild(ForecastDrawer.createLoader());
 					//td.innerHTML="Loading...";
