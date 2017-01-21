@@ -154,6 +154,7 @@ function ForecastTable(coords, name){
 		tmpTable.style.fontFamily="Arial";
 		tmpTable.style.fontSize="12px";
 		tmpTable.style.border = "none";
+		tmpTable.style.width="100%";
 		div.style.border = "1px solid #b0b0b0";
 		div.style.backgroundColor = "#fcfcfc";
 		div.style.padding="5px";

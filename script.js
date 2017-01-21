@@ -21,6 +21,7 @@ function ForecastTablesClass(){
 			var div = document.createElement("div");
 			div.style.display="inline-block";
 			div.style.textAlign="left";
+			div.style.width="100%";
 			div.innerHTML="<BR><h2>" + name + ":</h2>";
 			div.appendChild((new ForecastTable({lat: coords[0], lon: coords[1],}, name)).initialize());
 			forecastDiv.appendChild(div);
