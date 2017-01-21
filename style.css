@@ -31,6 +31,8 @@ canvas, div {
 
 #forecastTables {
 	margin: 20px;
+	text-align: center;
+	display: block;
 }
 
 /********************************************
@@ -186,7 +188,7 @@ canvas, div {
 
 #colortable {
   /*background-color: gray;*/
-  display: table;
+  display: block;
   position: absolute;
   bottom:3%;
   left: 10%;

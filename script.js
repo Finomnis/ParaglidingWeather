@@ -19,6 +19,8 @@ function ForecastTablesClass(){
 		for(name in locations){
 			var coords = locations[name];
 			var div = document.createElement("div");
+			div.style.display="inline-block";
+			div.style.textAlign="left";
 			div.innerHTML="<BR><h2>" + name + ":</h2>";
 			div.appendChild((new ForecastTable({lat: coords[0], lon: coords[1],}, name)).initialize());
 			forecastDiv.appendChild(div);
