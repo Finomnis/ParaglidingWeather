@@ -82,7 +82,7 @@ function ForecastTable(coords, name){
 
 	
 	this.buildElement = function(day,data){
-		//return;
+		return;
 		console.log(data);
 		for(topic in this.tableElements){
 			var topicElements = this.tableElements[topic];
@@ -138,7 +138,7 @@ function ForecastTable(coords, name){
 			td.style.border = "none";
 			td.style.borderRight = "1px solid black";
 			td.style.borderLeft = "1px solid black";
-			var square = ForecastDrawer.createSquare(16*this.time_points.length, Math.round(space), "pink");
+			var square = ForecastDrawer.createSquare(16/*this.time_points.length*/, Math.round(space), "pink");
 			td.appendChild(square);
 			console.log(square);
 			spacer.appendChild(td);
@@ -264,7 +264,7 @@ function ForecastTable(coords, name){
 					var td = document.createElement("TD");
 					td.style.border = "1px solid black";
 					td.style.padding = "0px";
-					td.style.width="300px";
+					//td.style.width="300px";
 					td.align = "center";
 					td.appendChild(ForecastDrawer.createLoader());
 					//td.innerHTML="Loading...";
