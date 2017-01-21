@@ -77,7 +77,7 @@ function ForecastDrawerClass(){
 	this.columnWidth  = 16;
 	this.rowHeight    = 16;
 	
-	this.overscale = 2;
+	this.overscale = 1;
 	
 	this.getNumEntries = function(data, targetHeight){
 		var heights = data[12].z;
