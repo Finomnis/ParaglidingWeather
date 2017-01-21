@@ -90,6 +90,17 @@ function ForecastDrawerClass(){
 		return id;
 	};
 	
+	this.createSquare = function(width, height, color){
+		var canvas = document.createElement("canvas");
+		canvas.width = width;
+		canvas.height = height;
+		canvas.style.border = "none";
+		var ctx = canvas.getContext("2d");
+		ctx.fillStyle = color;
+		ctx.fillRect(0,0,width, height);
+		return canvas;
+	};
+	
 	this.drawDataMap = function(data, maxHeight, getDataCallback, getColorCallback, cellWidth, cellHeight){
 	
 		var numHeights = this.getNumEntries(data, maxHeight);

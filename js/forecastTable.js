@@ -124,18 +124,23 @@ function ForecastTable(coords, name){
 		var spacer = document.createElement("TR");
 		spacer.style.border = "none";
 		spacer.style.height=spaceSize;
-		spacer.style.maxHeight=spaceSize;
-		spacer.style.minHeight=spaceSize;
+		//spacer.style.maxHeight=spaceSize;
+		//spacer.style.minHeight=spaceSize;
 		{
 			var td = document.createElement("TD");
 			td.style.border = "none";
 			td.colSpan = 2;
 			spacer.appendChild(td);
 		}
+		for(var i = 0; i < numElements; i++)
 		{
 			var td = document.createElement("TD");
 			td.style.border = "none";
-			td.colSpan = numElements;
+			td.style.borderRight = "1px solid black";
+			td.style.borderLeft = "1px solid black";
+			var square = ForecastDrawer.createSquare(16*this.time_points.length, Math.round(space), "pink");
+			td.appendChild(square);
+			console.log(square);
 			spacer.appendChild(td);
 		}
 		return spacer;
