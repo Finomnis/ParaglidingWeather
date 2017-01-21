@@ -82,7 +82,7 @@ function ForecastTable(coords, name){
 
 	
 	this.buildElement = function(day,data){
-		return;
+		//return;
 		console.log(data);
 		for(topic in this.tableElements){
 			var topicElements = this.tableElements[topic];

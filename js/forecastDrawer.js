@@ -120,11 +120,11 @@ function ForecastDrawerClass(){
 		canvas.height = height*this.overscale;
 		canvas.style.border = "none";
 		canvas.style.width = width + "px";
-		canvas.style.minWidth = width + "px";
-		canvas.style.maxWidth = width + "px";
-		canvas.style.height = height + "px";
-		canvas.style.minHeight = height + "px";
-		canvas.style.maxHeight = height + "px";
+		//canvas.style.minWidth = width + "px";
+		//canvas.style.maxWidth = width + "px";
+		//canvas.style.height = height + "px";
+		//canvas.style.minHeight = height + "px";
+		//canvas.style.maxHeight = height + "px";
 		return canvas;
 	};
 	
