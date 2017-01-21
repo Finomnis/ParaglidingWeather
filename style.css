@@ -106,8 +106,8 @@ canvas, div {
 	position: fixed;
 	right: -0.5vh;
 	margin-right: 0vh;
-	top: 42vh;
-	height: 16vh;
+	top: 42%;
+	height: 16%;
 	background-color: #111;
 	width: 2.5vh;
 	color: rgb(200,200,200);
