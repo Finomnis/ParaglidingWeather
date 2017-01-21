@@ -29,7 +29,9 @@ canvas, div {
 	display: block;
 }
 
-
+#forecastTables {
+	margin: 20px;
+}
 
 /********************************************
  * LOADING SIGN
