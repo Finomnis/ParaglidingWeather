@@ -24,6 +24,8 @@ function ForecastTablesClass(){
 			div.innerHTML="<BR><h2>" + name + ":</h2>";
 			div.appendChild((new ForecastTable({lat: coords[0], lon: coords[1],}, name)).initialize());
 			forecastDiv.appendChild(div);
+			forecastDiv.innerHTML += "<BR>";
+			
 		}
 	};
 }

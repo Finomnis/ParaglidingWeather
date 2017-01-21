@@ -29,11 +29,6 @@ canvas, div {
 	display: block;
 }
 
-#forecastTables {
-	margin: 20px;
-	text-align: center;
-	display: block;
-}
 
 /********************************************
  * LOADING SIGN
@@ -63,9 +58,16 @@ canvas, div {
  * SIDEBAR RIGHT
  ********************************************/
  
+#forecastTables {
+	margin: 20px;
+	text-align: center;
+	display: block;
+}
+
  #main {
  	margin-right: 0vh;
     transition: margin-right 0.5s;
+    white-space: nowrap;
  }
  
  #right_bar {
