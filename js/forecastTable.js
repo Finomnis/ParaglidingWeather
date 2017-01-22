@@ -402,9 +402,7 @@ function ForecastTable(coords, name){
 		
 		for(var i = 0; i < this.scalableElements["spacer"].length; i++){
 			var spacer = this.scalableElements["spacer"][i];
-			console.log(spacer.style);
 			var space = this.scalableElements["spacersize"][i];
-			console.log(space);
 			var spaceSize = space*scale + "px";
 			spacer.style.border = "none";
 			spacer.style.height=spaceSize;
