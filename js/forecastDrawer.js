@@ -114,6 +114,10 @@ function ForecastDrawerClass(){
 		return canvas;
 	};
 	
+	this.rescaleCanvas = function(canvas, scale){
+		canvas.style.width=Math.round((canvas.width/this.overscale)*scale) + "px";
+	};
+	
 	this.createCanvas = function(width, height, scale){
 		var canvas = document.createElement("canvas");
 		canvas.width = width*this.overscale;

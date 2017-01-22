@@ -10,6 +10,8 @@ function ForecastTable(coords, name){
 	
 	this.data = {};
 	
+	this.canvases = {};
+	
 	this.todoElement = function(data){
 		var div = document.createElement("DIV");
 		div.innerHTML="TODO";
@@ -103,12 +105,23 @@ function ForecastTable(coords, name){
 	
 	this.buildElement = function(day, scale){
 		var data = this.data[day];
+		if(!(day in this.canvases)){
+			this.canvases[day] = {};
+		}
 		for(topic in this.tableElements){
+			if(!(topic in this.canvases[day])){
+				this.canvases[day][topic] = {};
+			}
 			var topicElements = this.tableElements[topic];
 			for(element in topicElements){
-				this.clearElement(this.table[topic][element][day]).appendChild(topicElements[element](data, scale));
+				if(!(element in this.canvases[day][topic])){
+					this.canvases[day][topic][element] = topicElements[element](data, scale);
+				}
+				ForecastDrawer.rescaleCanvas(this.canvases[day][topic][element], scale);
+				this.clearElement(this.table[topic][element][day]).appendChild(this.canvases[day][topic][element]);
 			}
 		}
+		//console.log(this.canvases);
 	};
 	
 	this.updateTopLeft = function(){
@@ -128,7 +141,9 @@ function ForecastTable(coords, name){
 	};
 	
 	this.loadAsync = function(days, scale){
+		// clear caches
 		this.data = {};
+		this.canvases = {};
 		for(day in days){
 			// Send one async load for every day required
 			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra", "raintot", "wstar", "bsratio", "pblh", "ter", "blwindshear", "wblmaxmin"],
