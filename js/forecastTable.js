@@ -279,9 +279,11 @@ function ForecastTable(coords, name){
 		this.scalableElements["headers"] = {};
 		this.scalableElements["subtopics"] = {};
 		this.scalableElements["spacer"] = [];
+		this.scalableElements["spacersize"] = [];
 		for(topic in this.tableElements){
 			var spacer = this.createSpacer(Object.keys(datesToLoad).length, firstSpace, scale);
 			this.scalableElements["spacer"].push(spacer);
+			this.scalableElements["spacersize"].push(firstSpace);
 			tmpTable.appendChild(spacer);
 			
 			firstSpace=otherSpaces;
@@ -398,14 +400,17 @@ function ForecastTable(coords, name){
 			}
 		}
 		
-		/*for(var i = 0; i < this.scalableElements["spacer"].length; i++){
+		for(var i = 0; i < this.scalableElements["spacer"].length; i++){
 			var spacer = this.scalableElements["spacer"][i];
+			console.log(spacer.style);
+			var space = this.scalableElements["spacersize"][i];
+			console.log(space);
 			var spaceSize = space*scale + "px";
 			spacer.style.border = "none";
 			spacer.style.height=spaceSize;
 			spacer.style.maxHeight=spaceSize;
 			spacer.style.minHeight=spaceSize;	
-		}*/
+		}
 	};
 }
 
