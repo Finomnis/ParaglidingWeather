@@ -118,14 +118,14 @@ canvas, div {
 	right: -5px;
 	margin-right: 0vh;
 	top: 50%;
-	height: 150px;
-	margin-top: -75px;
+	height: 250px;
+	margin-top: -125px;
 	background-color: #111;
-	width: 25px;
+	width: 35px;
 	color: rgb(200,200,200);
-	border-top-left-radius:8px;
-	border-bottom-left-radius:8px;
-	font-size: 30px;
+	border-top-left-radius:15px;
+	border-bottom-left-radius:15px;
+	font-size: 40px;
     transition: margin-right 0.5s;
 }
 
