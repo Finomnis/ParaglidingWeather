@@ -43,7 +43,7 @@ canvas, div {
 
 #main {
  	margin-right: 0vh;
-    transition: margin-right 0.5s;
+    /*transition: margin-right 0.5s;*/
  }
  
 

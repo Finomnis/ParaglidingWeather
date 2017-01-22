@@ -52,7 +52,7 @@ function ForecastTablesClass(){
 	};
 	
 	this.redraw = function(){
-		console.log(this);
+		//console.log(this);
 		if(this.loaded == false){
 			console.log(this.loaded);
 			return;
@@ -62,8 +62,9 @@ function ForecastTablesClass(){
 		
 		for(var i = 0; i < this.tables.length; i++){
 			scale = this.tables[i].computeScaleFactor(targetWidth);
+			if(scale > 1) scale = 1;
 			this.headers[i].style.fontSize = 24*scale+"px";
-			//this.tables[i].redraw(scale);
+			this.tables[i].redraw(scale);
 		}
 	};
 }
@@ -142,6 +143,7 @@ function closeRightSidebar(){
 	document.getElementById("main").style.marginRight="0vh";
 	document.getElementById("right_bar").style.marginRight="0vh";
 	document.getElementById("rightSidebarButton").style.marginRight="0vh";
+	ForecastTables.redraw();
 }
 
 function openRightSidebar(){
@@ -150,6 +152,7 @@ function openRightSidebar(){
 	document.getElementById("main").style.marginRight="25vh";
 	document.getElementById("right_bar").style.marginRight="25vh";
 	document.getElementById("rightSidebarButton").style.marginRight="25vh";
+	ForecastTables.redraw();
 }
 
 var ColorTableSlider = new ColorTableSliderClass();
