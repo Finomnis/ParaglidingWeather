@@ -90,13 +90,13 @@ function ForecastDrawerClass(){
 		return id;
 	};
 	
-	this.drawDataMap = function(data, maxHeight, getDataCallback, getColorCallback, cellWidth, cellHeight){
+	this.drawDataMap = function(data, maxHeight, getDataCallback, getColorCallback, cellWidth, cellHeight, scale){
 	
 		var numHeights = this.getNumEntries(data, maxHeight);
 		
 		var numTimes = Object.keys(data).length;
 		
-		var canvas = this.createCanvas(numTimes*cellWidth, numHeights*cellHeight);
+		var canvas = this.createCanvas(numTimes*cellWidth, numHeights*cellHeight, scale);
 		
 		var paintWidth = cellWidth * this.overscale;
 		var paintHeight = cellHeight * this.overscale;
@@ -114,25 +114,20 @@ function ForecastDrawerClass(){
 		return canvas;
 	};
 	
-	this.createCanvas = function(width, height){
+	this.createCanvas = function(width, height, scale){
 		var canvas = document.createElement("canvas");
 		canvas.width = width*this.overscale;
 		canvas.height = height*this.overscale;
 		canvas.style.border = "none";
-		canvas.style.width = width + "px";
-		canvas.style.minWidth = width + "px";
-		canvas.style.maxWidth = width + "px";
-		canvas.style.height = height + "px";
-		canvas.style.minHeight = height + "px";
-		canvas.style.maxHeight = height + "px";
+		canvas.style.width=width*scale + "px";
 		return canvas;
 	};
 	
-	this.drawColorLine = function(data, type, getColorCallback, cellWidth, cellHeight){
+	this.drawColorLine = function(data, type, getColorCallback, cellWidth, cellHeight, scale){
 		
 		var numTimes = Object.keys(data).length;
 		
-		var canvas = this.createCanvas(numTimes*cellWidth, cellHeight);
+		var canvas = this.createCanvas(numTimes*cellWidth, cellHeight, scale);
 		
 		var paintWidth = cellWidth * this.overscale;
 		var paintHeight = cellHeight * this.overscale;
@@ -173,28 +168,26 @@ function ForecastDrawerClass(){
 		return div;
 	};
 	
-	this.drawTimes = function(times, offset){
+	this.drawTimes = function(times, offset, scale){
+		var div = document.createElement("DIV");
+		div.style.textAlign="center";
+		div.style.fontSize=scale*9.5 + "px";
 		var table = document.createElement("TABLE");
 		table.style.border = "none";
+		table.style.width=16*scale*times.length + "px";
+		
 		var tr = document.createElement("TR");
 		tr.style.border = "none";
-		
 		for(var i = 0; i < times.length; i++){
 			var td = document.createElement("TD");
 			td.style.border = "none";
 			td.style.padding = "0px";
-			td.minWidth = this.columnWidth;
-			td.maxWidth = this.columnWidth;
-			td.width = this.columnWidth;
-			var div = document.createElement("DIV");
-			div.style.textAlign="center";
-			div.style.fontSize="9.5px";
-			div.innerHTML = times[i] + offset;
-			td.appendChild(div);
+			td.innerHTML = (times[i] + offset);
 			tr.appendChild(td);
 		}
 		table.appendChild(tr);
-		return table;
+		div.appendChild(table);
+		return div;
 	};
 	
 
@@ -339,11 +332,11 @@ function ForecastDrawerClass(){
 		ctx.stroke();
 	};
 	
-	this.drawColorArrowHeightLine = function(data, typeX, typeY, height, getColorCallback, cellWidth, cellHeight){
+	this.drawColorArrowHeightLine = function(data, typeX, typeY, height, getColorCallback, cellWidth, cellHeight, scale){
 		
 		var numTimes = Object.keys(data).length;
 		
-		var canvas = this.createCanvas(numTimes*cellWidth, cellHeight);
+		var canvas = this.createCanvas(numTimes*cellWidth, cellHeight, scale);
 		
 		var paintWidth = cellWidth * this.overscale;
 		var paintHeight = cellHeight * this.overscale;

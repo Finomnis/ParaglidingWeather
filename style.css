@@ -1,3 +1,7 @@
+/*******************************************
+ * GENERAL SETTINGS
+ *******************************************/
+
 html, body {
     width:100%;
     height:100%;
@@ -29,9 +33,19 @@ canvas, div {
 	display: block;
 }
 
+/*******************************************
+ * MAIN ELEMENTS
+ *******************************************/
+
 #forecastTables {
-	margin: 20px;
+	margin: 3vw;
 }
+
+#main {
+ 	margin-right: 0vh;
+    transition: margin-right 0.5s;
+ }
+ 
 
 /********************************************
  * LOADING SIGN
@@ -56,15 +70,12 @@ canvas, div {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
+ 
+ 
 /********************************************
  * SIDEBAR RIGHT
  ********************************************/
  
- #main {
- 	margin-right: 0vh;
-    transition: margin-right 0.5s;
- }
  
  #right_bar {
     height: 100%;

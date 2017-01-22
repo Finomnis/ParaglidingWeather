@@ -1,3 +1,5 @@
+problem: devices with TOO LITTLE resolution (e.g. all mobile phones. they have a pretty low 'virtual' resolution.)
+
 
 TOP PRIORITY:
 Defaults Page (for us), and SEARCH BAR

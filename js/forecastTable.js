@@ -17,7 +17,7 @@ function ForecastTable(coords, name){
 	
 
 	
-	this.constructCloudMap = function(data){
+	this.constructCloudMap = function(data, scale){
 		return ForecastDrawer.drawDataMap(data,
 										  this.cloudMapMaxHeight,
 										  function (data,time,height) {
@@ -26,10 +26,10 @@ function ForecastTable(coords, name){
 										  function (data) {
 											  var gray = 100*data + 255*(1-data);
 											  return [gray,gray,gray];
-										  }, 16, 3);
+										  }, 16, 3, scale);
 	};
 		
-	this.constructWindMap = function(data){
+	this.constructWindMap = function(data, scale){
 		return ForecastDrawer.drawDataMap(data,
 										  this.windMapMaxHeight,
 										  function (data,time,height) {
@@ -38,17 +38,36 @@ function ForecastTable(coords, name){
 											  return Math.sqrt(umet*umet+vmet*vmet);
 										  },
 										  Color.get.bind(Color, "PAL_WIND"),
-										  16, 3
+										  16, 3, scale
 			);
 	};
 	
-	this.constructRow = function(type, colmap, data){
-		return ForecastDrawer.drawColorLine(data, type, Color.get.bind(Color,colmap), 16, 16);
+	this.constructRow = function(type, colmap, data, scale){
+		return ForecastDrawer.drawColorLine(data, type, Color.get.bind(Color,colmap), 16, 16, scale);
 	};
 	
-	this.constructArrowHeightRow = function(type1, type2, height, colmap, data){
+	this.constructArrowHeightRow = function(type1, type2, height, colmap, data, scale){
 		var height0 = data[Object.keys(data)[0]]["ter"];
-		return ForecastDrawer.drawColorArrowHeightLine(data, type1, type2, height0 + height, Color.get.bind(Color,colmap), 16, 16);
+		return ForecastDrawer.drawColorArrowHeightLine(data, type1, type2, height0 + height, Color.get.bind(Color,colmap), 16, 16, scale);
+	};
+	
+	this.computeScaleFactor = function(width){
+		
+		// remove 1px borders
+		var numDays = Object.keys(WeatherData.runDays).length;
+		var innerWidth = width - (3+numDays);
+		
+		// divide by all others
+		//var scale = innerWidth / ()
+		var totalContent = 0;
+		totalContent += 2*5; // outer padding
+		totalContent += 14; // left headers
+		totalContent += 110+2; // left data line headers
+		
+		totalContent += numDays * this.time_points.length * 16; // actual data table
+		
+		return innerWidth/totalContent;
+		
 	};
 	
 	this.tableElements = {
@@ -81,21 +100,21 @@ function ForecastTable(coords, name){
 	};
 
 	
-	this.buildElement = function(day,data){
+	this.buildElement = function(day,data, scale){
 		console.log(data);
 		for(topic in this.tableElements){
 			var topicElements = this.tableElements[topic];
 			for(element in topicElements){
-				this.clearElement(this.table[topic][element][day]).appendChild(topicElements[element](data));
+				this.clearElement(this.table[topic][element][day]).appendChild(topicElements[element](data, scale));
 			}
 		}
 	};
 	
-	this.loadAsync = function(days){
+	this.loadAsync = function(days, scale){
 		for(day in days){
 			// Send one async load for every day required
 			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra", "raintot", "wstar", "bsratio", "pblh", "ter", "blwindshear", "wblmaxmin"],
-				function(day, data){
+				function(day, scale, data){
 					// retreive coordinates from one of the loads
 					if(day === WeatherData.today){
 						this.coords = data.gridCoords;
@@ -111,15 +130,15 @@ function ForecastTable(coords, name){
 						mapsLink.href="http://www.google.com/maps/place/" + data.gridCoords.lat + "," + data.gridCoords.lon;
 						this.clearElement(this.mapsLink).appendChild(mapsLink);
 					}
-					
-					this.buildElement(day, data[day]);
-				}.bind(this, day)
+					console.log(data);
+					this.buildElement(day, data[day], scale);
+				}.bind(this, day, scale)
 			);
 		}
 	};
 	
-	this.createSpacer = function(numElements, space){
-		var spaceSize = Math.round(space) + "px";
+	this.createSpacer = function(numElements, space, scale){
+		var spaceSize = space*scale + "px";
 		var spacer = document.createElement("TR");
 		spacer.style.border = "none";
 		spacer.style.height=spaceSize;
@@ -140,17 +159,19 @@ function ForecastTable(coords, name){
 		return spacer;
 	};
 	
-	this.initialize = function(){
+	
+	this.initialize = function(scale){
+				
 		var div = document.createElement("DIV");
 		//var borderTable = document.createElement("TABLE");
 		var tmpTable = document.createElement("TABLE");
 		
 		tmpTable.style.fontFamily="Arial";
-		tmpTable.style.fontSize="12px";
+		tmpTable.style.fontSize= 12*scale + "px";
 		tmpTable.style.border = "none";
 		div.style.border = "1px solid #b0b0b0";
 		div.style.backgroundColor = "#fcfcfc";
-		div.style.padding="5px";
+		div.style.padding= 5*scale + "px";
 		div.style.display="inline-block";
 		
 		var datesToLoad = WeatherData.runDays;
@@ -175,7 +196,7 @@ function ForecastTable(coords, name){
 				var dateObj = new Date(date.substring(0,4),parseInt(date.substring(4,6))-1, date.substring(6,8));
 				th.innerHTML = weekDays[dateObj.getDay()] + ", " + dateObj.getDate();
 				tr.appendChild(th);
-				th.style.paddingBottom="10px";
+				th.style.paddingBottom=10*scale+"px";
 				
 			}
 			tmpTable.appendChild(tr);
@@ -199,7 +220,7 @@ function ForecastTable(coords, name){
 				td.style.borderLeft = "1px solid black";
 				td.style.borderRight = "1px solid black";
 				td.style.padding = "0px";
-				td.appendChild(ForecastDrawer.drawTimes(this.time_points, WeatherData.timezoneOffset));
+				td.appendChild(ForecastDrawer.drawTimes(this.time_points, WeatherData.timezoneOffset, scale));
 				tr.appendChild(td);
 				
 			}
@@ -213,7 +234,7 @@ function ForecastTable(coords, name){
 		var firstSpace = 8;
 		var otherSpaces = 10;
 		for(topic in this.tableElements){
-			tmpTable.appendChild(this.createSpacer(Object.keys(datesToLoad).length, firstSpace));
+			tmpTable.appendChild(this.createSpacer(Object.keys(datesToLoad).length, firstSpace, scale));
 			firstSpace=otherSpaces;
 			
 			this.table[topic] = {};
@@ -226,7 +247,7 @@ function ForecastTable(coords, name){
 				var th = document.createElement("TH");
 				th.style.border = "none";
 				th.style.backgroundColor = "#e0e0e0";
-				th.style.minWidth = "14px";
+				th.style.minWidth = 14*scale+"px";
 				th.rowSpan=numSubElements+1;
 				var headerDiv = document.createElement("DIV");
 				headerDiv.className = "vertical";
@@ -246,8 +267,8 @@ function ForecastTable(coords, name){
 				// Description
 				{
 					var td = document.createElement("TD");
-					td.style.paddingLeft="10px";
-					td.style.paddingRight="2px";
+					td.style.minWidth=110*scale + "px";
+					td.style.paddingRight= 2*scale + "px";
 					td.innerHTML=element;
 					td.style.border = "none";
 					td.style.textAlign = "right";
@@ -271,7 +292,7 @@ function ForecastTable(coords, name){
 		div.appendChild(tmpTable);
 		//div.appendChild(ForecastDrawer.drawAllPallettes(500, 30));
 		
-		this.loadAsync(datesToLoad);
+		this.loadAsync(datesToLoad, scale);
 		
 		return div;
 	};

@@ -16,11 +16,22 @@ function ForecastTablesClass(){
 			forecastDiv.removeChild(forecastDiv.firstChild);
 		}
 		
+		var targetWidth = 2000;
+		
 		for(name in locations){
 			var coords = locations[name];
+			
+			var table = new ForecastTable({lat: coords[0], lon: coords[1],}, name);
+			var scale = table.computeScaleFactor(targetWidth);
+			if(scale > 1) scale = 1;
+			
 			var div = document.createElement("div");
-			div.innerHTML="<BR><h2>" + name + ":</h2>";
-			div.appendChild((new ForecastTable({lat: coords[0], lon: coords[1],}, name)).initialize());
+			div.innerHTML="<BR>";
+			var h2 = document.createElement("h2");
+			h2.style.fontSize=24*scale+"px";
+			h2.innerHTML=name;
+			div.appendChild(h2);
+			div.appendChild(table.initialize(scale));
 			forecastDiv.appendChild(div);
 		}
 	};
