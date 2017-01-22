@@ -78,6 +78,7 @@ function ForecastTablesClass(){
 	};*/
 	
 	this.rescale = function(){
+		return;
 		//console.log(this);
 		if(this.loaded == false){
 			return;
