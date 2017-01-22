@@ -12,6 +12,8 @@ function ForecastTable(coords, name){
 	
 	this.canvases = {};
 	
+	this.scalableElements = {};
+	
 	this.todoElement = function(data){
 		var div = document.createElement("DIV");
 		div.innerHTML="TODO";
@@ -187,6 +189,8 @@ function ForecastTable(coords, name){
 	
 	this.createBaseTable = function(scale){
 		
+		this.scalableElements = {};
+		
 		if(this.baseTable){
 			this.baseTable = this.clearElement(this.baseTable);
 		} else {
@@ -202,10 +206,12 @@ function ForecastTable(coords, name){
 		tmpTable.style.fontFamily="Arial";
 		tmpTable.style.fontSize= 12*scale + "px";
 		tmpTable.style.border = "none";
+		this.scalableElements["table"] = tmpTable;	// fontSize
 		div.style.border = "1px solid #b0b0b0";
 		div.style.backgroundColor = "#fcfcfc";
 		div.style.padding= 5*scale + "px";
 		div.style.display="inline-block";
+		this.scalableElements["tablediv"] = div; // padding
 		
 		var datesToLoad = WeatherData.runDays;
 		
@@ -222,6 +228,7 @@ function ForecastTable(coords, name){
 				tr.appendChild(td);
 				this.mapsLink=td;
 			}
+			this.scalableElements["dates"] = [];
 			for(date in datesToLoad){
 				var th = document.createElement("TH");
 				th.style.border = "none";
@@ -230,7 +237,7 @@ function ForecastTable(coords, name){
 				th.innerHTML = weekDays[dateObj.getDay()] + ", " + dateObj.getDate();
 				tr.appendChild(th);
 				th.style.paddingBottom=10*scale+"px";
-				
+				this.scalableElements["dates"].push(th); // paddingBottom
 			}
 			tmpTable.appendChild(tr);
 		}
@@ -247,13 +254,16 @@ function ForecastTable(coords, name){
 				tr.appendChild(td);
 				this.heightEntry=td;
 			}
+			this.scalableElements["times"] = [];
 			for(date in datesToLoad){
 				var td = document.createElement("TD");
 				td.style.border = "none";
 				td.style.borderLeft = "1px solid black";
 				td.style.borderRight = "1px solid black";
 				td.style.padding = "0px";
-				td.appendChild(ForecastDrawer.drawTimes(this.time_points, WeatherData.timezoneOffset, scale));
+				var timesDiv = ForecastDrawer.drawTimes(this.time_points, WeatherData.timezoneOffset, scale);
+				this.scalableElements["times"].push(timesDiv); // fontsize and width
+				td.appendChild(timesDiv);
 				tr.appendChild(td);
 				
 			}
@@ -266,6 +276,8 @@ function ForecastTable(coords, name){
 		
 		var firstSpace = 8;
 		var otherSpaces = 10;
+		this.scalableElements["headers"] = {};
+		this.scalableElements["subtopics"] = {};
 		for(topic in this.tableElements){
 			tmpTable.appendChild(this.createSpacer(Object.keys(datesToLoad).length, firstSpace, scale));
 			firstSpace=otherSpaces;
@@ -281,6 +293,7 @@ function ForecastTable(coords, name){
 				th.style.border = "none";
 				th.style.backgroundColor = "#e0e0e0";
 				th.style.minWidth = 14*scale+"px";
+				this.scalableElements["headers"][topic] = th; // minWidth
 				th.rowSpan=numSubElements+1;
 				var headerDiv = document.createElement("DIV");
 				headerDiv.className = "vertical";
@@ -292,6 +305,7 @@ function ForecastTable(coords, name){
 				tmpTable.appendChild(tr);
 			}
 			// Data rows
+			this.scalableElements["subtopics"][topic] = {};
 			for(element in topicElements){
 				this.table[topic][element] = {};
 				var tr = document.createElement("TR");
@@ -302,6 +316,7 @@ function ForecastTable(coords, name){
 					var td = document.createElement("TD");
 					td.style.minWidth=110*scale + "px";
 					td.style.paddingRight= 2*scale + "px";
+					this.scalableElements["subtopics"][topic][element] = td; // minWidth, paddingRight
 					td.innerHTML=element;
 					td.style.border = "none";
 					td.style.textAlign = "right";
@@ -336,7 +351,7 @@ function ForecastTable(coords, name){
 		return this.baseTable;
 	};
 	
-	this.redraw = function(scale){
+	/*this.redraw = function(scale){
 		
 		this.createBaseTable(scale);
 		
@@ -344,6 +359,21 @@ function ForecastTable(coords, name){
 			this.buildElement(day, scale);
 		}
 		this.updateTopLeft();
+	};*/
+	
+	this.rescale = function(scale){
+		//console.log(this.scalableElements);
+		
+		for(var date in this.canvases){
+			var canv2 = this.canvases[date];
+			for(var topic in canv2){
+				var canv3 = canv2[topic];
+				for(var subtopic in canv3){
+					ForecastDrawer.rescaleCanvas(canv3[subtopic],scale);
+				}
+			}			
+		}
+		//console.log(this.canvases);
 	};
 }
 

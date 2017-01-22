@@ -176,9 +176,10 @@ function ForecastDrawerClass(){
 		var div = document.createElement("DIV");
 		div.style.textAlign="center";
 		div.style.fontSize=scale*9.5 + "px";
+		div.style.width=Math.round(16*scale*times.length) + "px";
 		var table = document.createElement("TABLE");
 		table.style.border = "none";
-		table.style.width=Math.round(16*scale*times.length) + "px";
+		table.style.width="100%";
 		
 		var tr = document.createElement("TR");
 		tr.style.border = "none";

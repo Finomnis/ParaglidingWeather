@@ -12,6 +12,8 @@ function ForecastTablesClass(){
 	this.tables = [];
 	this.headers = [];
 	
+	this.oldTargetWidth = 0;
+	
 	this.computeTargetWidth = function(){
 		var mainRect = document.getElementById("main").getBoundingClientRect();
 		return mainRect.width*0.9;
@@ -26,6 +28,7 @@ function ForecastTablesClass(){
 		}
 		
 		var targetWidth = this.computeTargetWidth();
+		this.oldTargetWidth = targetWidth;
 		
 		this.headers=[];
 		this.tables=[];
@@ -51,6 +54,7 @@ function ForecastTablesClass(){
 		this.loaded = true;
 	};
 	
+	/*
 	this.redraw = function(){
 		//console.log(this);
 		if(this.loaded == false){
@@ -59,12 +63,38 @@ function ForecastTablesClass(){
 		};
 		
 		var targetWidth = this.computeTargetWidth();
+		if(targetWidth == this.oldTargetWidth){
+			return;
+		}
+
+		this.oldTargetWidth = targetWidth;
 		
 		for(var i = 0; i < this.tables.length; i++){
 			scale = this.tables[i].computeScaleFactor(targetWidth);
 			if(scale > 1) scale = 1;
 			this.headers[i].style.fontSize = 24*scale+"px";
 			this.tables[i].redraw(scale);
+		}
+	};*/
+	
+	this.rescale = function(){
+		//console.log(this);
+		if(this.loaded == false){
+			return;
+		};
+		
+		var targetWidth = this.computeTargetWidth();
+		if(targetWidth == this.oldTargetWidth){
+			return;
+		}
+
+		this.oldTargetWidth = targetWidth;
+		
+		for(var i = 0; i < this.tables.length; i++){
+			scale = this.tables[i].computeScaleFactor(targetWidth);
+			if(scale > 1) scale = 1;
+			this.headers[i].style.fontSize = 24*scale+"px";
+			this.tables[i].rescale(scale);
 		}
 	};
 }
@@ -143,7 +173,7 @@ function closeRightSidebar(){
 	document.getElementById("main").style.marginRight="0vh";
 	document.getElementById("right_bar").style.marginRight="0vh";
 	document.getElementById("rightSidebarButton").style.marginRight="0vh";
-	ForecastTables.redraw();
+	ForecastTables.rescale();
 }
 
 function openRightSidebar(){
@@ -152,7 +182,7 @@ function openRightSidebar(){
 	document.getElementById("main").style.marginRight="25vh";
 	document.getElementById("right_bar").style.marginRight="25vh";
 	document.getElementById("rightSidebarButton").style.marginRight="25vh";
-	ForecastTables.redraw();
+	ForecastTables.rescale();
 }
 
 var ColorTableSlider = new ColorTableSliderClass();
@@ -180,7 +210,9 @@ $(document).ready(function(){
 	ColorTableSlider.updateColorTable();
 });
 
+var previousWidth = 0;
+
 window.onresize = function(){
 	ColorTableSlider.redrawColorTable();
-	ForecastTables.redraw();
+	ForecastTables.rescale();
 };
