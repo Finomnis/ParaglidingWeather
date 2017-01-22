@@ -278,8 +278,12 @@ function ForecastTable(coords, name){
 		var otherSpaces = 10;
 		this.scalableElements["headers"] = {};
 		this.scalableElements["subtopics"] = {};
+		this.scalableElements["spacer"] = [];
 		for(topic in this.tableElements){
-			tmpTable.appendChild(this.createSpacer(Object.keys(datesToLoad).length, firstSpace, scale));
+			var spacer = this.createSpacer(Object.keys(datesToLoad).length, firstSpace, scale);
+			this.scalableElements["spacer"].push(spacer);
+			tmpTable.appendChild(spacer);
+			
 			firstSpace=otherSpaces;
 			
 			this.table[topic] = {};
@@ -373,7 +377,35 @@ function ForecastTable(coords, name){
 				}
 			}			
 		}
-		//console.log(this.canvases);
+		
+		this.scalableElements["table"].style.fontSize= 12*scale + "px";
+		this.scalableElements["tablediv"].style.padding= 5*scale + "px";
+		
+		for(var i = 0; i < this.scalableElements["dates"].length; i++){
+			this.scalableElements["dates"][i].style.paddingBottom=10*scale+"px";
+		};
+		for(var i = 0; i < this.scalableElements["times"].length; i++){
+			var currentTime = this.scalableElements["times"][i];
+			currentTime.style.fontSize=scale*9.5 + "px";
+			currentTime.style.width=Math.round(16*scale*this.time_points.length) + "px";
+		};
+		
+		for(var topic in this.scalableElements["headers"]){
+			this.scalableElements["headers"][topic].style.minWidth = 14*scale+"px";
+			for(var subtopic in this.scalableElements["subtopics"][topic]){
+				this.scalableElements["subtopics"][topic][subtopic].style.minWidth=110*scale + "px";
+				this.scalableElements["subtopics"][topic][subtopic].style.paddingRight= 2*scale + "px";
+			}
+		}
+		
+		/*for(var i = 0; i < this.scalableElements["spacer"].length; i++){
+			var spacer = this.scalableElements["spacer"][i];
+			var spaceSize = space*scale + "px";
+			spacer.style.border = "none";
+			spacer.style.height=spaceSize;
+			spacer.style.maxHeight=spaceSize;
+			spacer.style.minHeight=spaceSize;	
+		}*/
 	};
 }
 

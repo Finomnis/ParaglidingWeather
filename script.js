@@ -78,7 +78,6 @@ function ForecastTablesClass(){
 	};*/
 	
 	this.rescale = function(){
-		return;
 		//console.log(this);
 		if(this.loaded == false){
 			return;
@@ -169,19 +168,19 @@ function ColorTableSliderClass(){
 }
 
 function closeRightSidebar(){
+	document.getElementById("main").style.marginRight="0vh";
 	ForecastTables.rescale();
 	document.getElementById("rightSidebarButton").onclick=openRightSidebar;
 	document.getElementById("right_arrow").innerHTML="&laquo;";
-	document.getElementById("main").style.marginRight="0vh";
 	document.getElementById("right_bar").style.marginRight="0vh";
 	document.getElementById("rightSidebarButton").style.marginRight="0vh";
 }
 
 function openRightSidebar(){
+	document.getElementById("main").style.marginRight="25vh";
 	ForecastTables.rescale();
 	document.getElementById("rightSidebarButton").onclick=closeRightSidebar;
 	document.getElementById("right_arrow").innerHTML="&raquo;";
-	document.getElementById("main").style.marginRight="25vh";
 	document.getElementById("right_bar").style.marginRight="25vh";
 	document.getElementById("rightSidebarButton").style.marginRight="25vh";
 }
