@@ -168,21 +168,21 @@ function ColorTableSliderClass(){
 }
 
 function closeRightSidebar(){
+	ForecastTables.rescale();
 	document.getElementById("rightSidebarButton").onclick=openRightSidebar;
 	document.getElementById("right_arrow").innerHTML="&laquo;";
 	document.getElementById("main").style.marginRight="0vh";
 	document.getElementById("right_bar").style.marginRight="0vh";
 	document.getElementById("rightSidebarButton").style.marginRight="0vh";
-	ForecastTables.rescale();
 }
 
 function openRightSidebar(){
+	ForecastTables.rescale();
 	document.getElementById("rightSidebarButton").onclick=closeRightSidebar;
 	document.getElementById("right_arrow").innerHTML="&raquo;";
 	document.getElementById("main").style.marginRight="25vh";
 	document.getElementById("right_bar").style.marginRight="25vh";
 	document.getElementById("rightSidebarButton").style.marginRight="25vh";
-	ForecastTables.rescale();
 }
 
 var ColorTableSlider = new ColorTableSliderClass();
