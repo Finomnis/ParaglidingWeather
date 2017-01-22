@@ -63,8 +63,6 @@ function ForecastTablesClass(){
 		for(var i = 0; i < this.tables.length; i++){
 			scale = this.tables[i].computeScaleFactor(targetWidth);
 			this.headers[i].style.fontSize = 24*scale+"px";
-			var mainRect = document.getElementById("main").getBoundingClientRect();
-			this.headers[i].innerHTML=mainRect.width + " x " + mainRect.height;
 			//this.tables[i].redraw(scale);
 		}
 	};
