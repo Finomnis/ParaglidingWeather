@@ -4,6 +4,7 @@ function WeatherDataClass(){
 	this.today = "";
 	this.domain = "";
 	this.timezoneOffset = 0;
+	this.dataValid = false;
 	
 	this.fetchData = function(coords, day, hours, params, callback){
 		var runDay = this.runDays[day];
@@ -66,6 +67,7 @@ function WeatherDataClass(){
 					if(found == false) break;
 				}
 				// After update, redraw the forecast tables
+				this.dataValid = true;
 				redrawCallback();
 			},this,redrawCallback)
 		});

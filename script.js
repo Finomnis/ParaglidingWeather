@@ -7,8 +7,17 @@ var URLObject = new urlObject();
 
 function ForecastTablesClass(){
 
+	this.loaded = false;
 	
-	this.redraw = function(){
+	this.tables = [];
+	this.headers = [];
+	
+	this.computeTargetWidth = function(){
+		var mainRect = document.getElementById("main").getBoundingClientRect();
+		return mainRect.width*0.9;
+	};
+	
+	this.reload = function(){
 		// get div
 		var forecastDiv = document.getElementById("forecastTables");
 		// clear div
@@ -16,12 +25,16 @@ function ForecastTablesClass(){
 			forecastDiv.removeChild(forecastDiv.firstChild);
 		}
 		
-		var targetWidth = 2000;
+		var targetWidth = this.computeTargetWidth();
+		
+		this.headers=[];
+		this.tables=[];
 		
 		for(name in locations){
 			var coords = locations[name];
 			
 			var table = new ForecastTable({lat: coords[0], lon: coords[1],}, name);
+			this.tables.push(table);
 			var scale = table.computeScaleFactor(targetWidth);
 			if(scale > 1) scale = 1;
 			
@@ -30,9 +43,27 @@ function ForecastTablesClass(){
 			var h2 = document.createElement("h2");
 			h2.style.fontSize=24*scale+"px";
 			h2.innerHTML=name;
+			this.headers.push(h2);
 			div.appendChild(h2);
 			div.appendChild(table.initialize(scale));
 			forecastDiv.appendChild(div);
+		}
+		this.loaded = true;
+	};
+	
+	this.redraw = function(){
+		console.log(this);
+		if(this.loaded == false){
+			console.log(this.loaded);
+			return;
+		};
+		
+		var targetWidth = this.computeTargetWidth();
+		
+		for(var i = 0; i < this.tables.length; i++){
+			scale = this.tables[i].computeScaleFactor(targetWidth);
+			this.headers[i].style.fontSize = 24*scale+"px";
+			//this.tables[i].redraw(scale);
 		}
 	};
 }
@@ -139,7 +170,7 @@ $(document).ready(function(){
 	if(URLObject.parameters.locations){
 		locations = URLCoder.decodeBase64(URLObject.parameters.locations);
 	}		
-	WeatherData.refreshAll(ForecastTables.redraw);
+	WeatherData.refreshAll(ForecastTables.reload.bind(ForecastTables));
 });
 
 $(document).ready(function(){
@@ -148,4 +179,5 @@ $(document).ready(function(){
 
 window.onresize = function(){
 	ColorTableSlider.redrawColorTable();
+	ForecastTables.redraw();
 };
