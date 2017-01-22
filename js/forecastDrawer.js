@@ -119,7 +119,7 @@ function ForecastDrawerClass(){
 		canvas.width = width*this.overscale;
 		canvas.height = height*this.overscale;
 		canvas.style.border = "none";
-		canvas.style.width=width*scale + "px";
+		canvas.style.width=Math.round(width*scale) + "px";
 		return canvas;
 	};
 	
@@ -174,7 +174,7 @@ function ForecastDrawerClass(){
 		div.style.fontSize=scale*9.5 + "px";
 		var table = document.createElement("TABLE");
 		table.style.border = "none";
-		table.style.width=16*scale*times.length + "px";
+		table.style.width=Math.round(16*scale*times.length) + "px";
 		
 		var tr = document.createElement("TR");
 		tr.style.border = "none";
