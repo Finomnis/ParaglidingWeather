@@ -256,11 +256,11 @@ function initializeWeatherData(){
 	WeatherData.refreshAll(ForecastTables.reload.bind(ForecastTables));
 }
 
-$(document).ready(function(){
+/*$(document).ready(function(){
 	if(!URLObject.parameters.placeID){
 		initializeWeatherData();
 	}
-});
+});*/
 
 $(document).ready(function(){
 	ColorTableSlider.updateColorTable();
@@ -292,7 +292,9 @@ function initPlaces(){
 	autocomplete.addListener('place_changed', function(){URLGenerator.search();});
 	
 	geocoder = new google.maps.Geocoder;
-	if(URLObject.parameters.placeID){
-		initializeWeatherData();
-	}
+	
+	// NOW start to get data for the website
+	initializeAlpsPolygon();
+	initializeWeatherData();
+	
 }

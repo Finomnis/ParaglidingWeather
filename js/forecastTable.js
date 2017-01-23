@@ -1,5 +1,19 @@
+var alpsPolygon;
+
+var initializeAlpsPolygon = function(){
+	alpsPolygon = new google.maps.Polygon({
+		paths: [{"lat":48.15875730456923,"lng":11.063232421875},{"lat":48.45835188280866,"lng":16.67724609375},{"lat":46.73233101286786,"lng":16.50146484375},{"lat":45.66780526567164,"lng":13.458251953125},{"lat":44.707706221835345,"lng":10.6787109375},{"lat":44.91813929958515,"lng":9.173583984375},{"lat":43.34914966389312,"lng":8.4375},{"lat":43.16512263158295,"lng":5.592041015625},{"lat":45.01141864227728,"lng":4.207763671875},{"lat":47.092565552235705,"lng":5.625},{"lat":48.04136507445029,"lng":8.426513671875}]
+	});
+};
+
+
 function ForecastTable(coords, name){
 	
+	this.inAlps = false;
+	if(google.maps.geometry.poly.containsLocation(new google.maps.LatLng(coords.lat,coords.lon), alpsPolygon)){
+		this.inAlps = true;
+	}
+		
 	this.time_points = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
 	this.windMapMaxHeight = 4050;
 	this.cloudMapMaxHeight = 5050;
