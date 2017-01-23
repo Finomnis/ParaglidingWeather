@@ -1,16 +1,9 @@
-problem: devices with TOO LITTLE resolution (e.g. all mobile phones. they have a pretty low 'virtual' resolution.)
-
 
 TOP PRIORITY:
-Defaults Page (for us), and SEARCH BAR
-https://maps.googleapis.com/maps/api/geocode/json?address=
-
 - on click (wind height distr., clouds) open one of two detailed images:
   - wind height distribution, with values and heights
   - cloud height distribution with rain indicator on bottom
-- make color tables hideable
-- add places menu on the left
-- Foehn / algorithm to decide whether or not ot show it
+- Foehn 
 
 
   - tables:
