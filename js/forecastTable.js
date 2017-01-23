@@ -104,7 +104,7 @@ function ForecastTable(coords, name){
 			"Thermals":{
 				"Velocity":this.constructRow.bind(this,"wstar", "PAL_THERMIQUES"),
 				"B/S Ratio":this.constructRow.bind(this,"bsratio", "PAL_BSRATIO"),
-				"BL Top":this.constructRow.bind(this,"bsratio", "PAL_CBASE"),
+				"BL Top":this.constructRow.bind(this,"pblh", "PAL_CBASE"),
 				"BL Vertical Motion":this.constructRow.bind(this,"wblmaxmin", "PAL_CONVERGENCE"),
 			}
 	};
@@ -121,6 +121,7 @@ function ForecastTable(coords, name){
 	
 	this.buildElement = function(day, scale){
 		var data = this.data[day];
+		//console.log(data);
 		if(!(day in this.canvases)){
 			this.canvases[day] = {};
 		}

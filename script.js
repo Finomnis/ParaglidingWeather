@@ -147,7 +147,8 @@ function ColorTableSliderClass(){
 				"thermal_vel": ["PAL_THERMIQUES", 1, "m/s"],
 				"b_s_ratio": ["PAL_BSRATIO", 1, null],
 				"bl_top": ["PAL_CBASE", 1, "m"],
-				"bl_vmotion": ["PAL_CONVERGENCE", 0.01, "m/s"]
+				"bl_vmotion": ["PAL_CONVERGENCE", 0.01, "m/s"],
+				"foehn": ["PAL_WIND", 1/2.3125, "hPa"]
 			};
 		
 		
@@ -240,7 +241,6 @@ function initializeWeatherData(){
 	if(URLObject.parameters.placeID){
 		geocoder.geocode({'placeId': URLObject.parameters.placeID}, function(results, status) {
 			if (status === 'OK') {
-				console.log(results);
 				var place = results[0];
 				locations = {};
 				locations[place.formatted_address] = [place.geometry.location.lat(),place.geometry.location.lng()];
@@ -281,12 +281,10 @@ var autocomplete;
 var geocoder;
 var searchBounds;
 function initPlaces(){
-	console.log("initPlaces");
 	searchBounds = new google.maps.LatLngBounds(
 	          new google.maps.LatLng( 41.43, -4.96), //sw
 	          new google.maps.LatLng( 51.4, 15.72 ) //ne
 	        );
-	console.log(searchBounds);
 	autocomplete = new google.maps.places.Autocomplete(document.getElementById("search_input"),{types:['geocode'], bounds:searchBounds});
 	
 	autocomplete.addListener('place_changed', function(){URLGenerator.search();});
