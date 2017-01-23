@@ -235,11 +235,30 @@ function URLCoderClass(){
 }
 var URLCoder = new URLCoderClass();
 
-$(document).ready(function(){
-	if(URLObject.parameters.locations){
+function initializeWeatherData(){
+	if(URLObject.parameters.placeID){
+		geocoder.geocode({'placeId': URLObject.parameters.placeID}, function(results, status) {
+			if (status === 'OK') {
+				console.log(results);
+				var place = results[0];
+				locations = {};
+				locations[place.formatted_address] = [place.geometry.location.lat(),place.geometry.location.lng()];
+			} else {
+				MainControl.showMessage("Given placeID is invalid!");
+			}
+			WeatherData.refreshAll(ForecastTables.reload.bind(ForecastTables));
+		});
+		return;
+	} else if(URLObject.parameters.locations){
 		locations = URLCoder.decodeBase64(URLObject.parameters.locations);
 	}		
 	WeatherData.refreshAll(ForecastTables.reload.bind(ForecastTables));
+}
+
+$(document).ready(function(){
+	if(!URLObject.parameters.placeID){
+		initializeWeatherData();
+	}
 });
 
 $(document).ready(function(){
@@ -266,9 +285,13 @@ function initPlaces(){
 	          new google.maps.LatLng( 41.43, -4.96), //sw
 	          new google.maps.LatLng( 51.4, 15.72 ) //ne
 	        );
+	console.log(searchBounds);
 	autocomplete = new google.maps.places.Autocomplete(document.getElementById("search_input"),{types:['geocode'], bounds:searchBounds});
 	
 	autocomplete.addListener('place_changed', function(){URLGenerator.search();});
 	
 	geocoder = new google.maps.Geocoder;
+	if(URLObject.parameters.placeID){
+		initializeWeatherData();
+	}
 }
