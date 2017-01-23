@@ -199,6 +199,12 @@ function MainControlClass(){
 		disabler.style.display="none";
 	};
 	
+	this.showMessage = function(message){
+		var popup = this.showPopup();
+		popup.innerHTML = message;
+		popup.style.fontSize="30px";
+	};
+	
 	this.showPopup = function(){
 		this.disablePage();
 		var popup = document.getElementById("popupWindow");
@@ -240,13 +246,29 @@ $(document).ready(function(){
 	ColorTableSlider.updateColorTable();
 });
 
-var previousWidth = 0;
-
 window.onresize = function(){
 	ColorTableSlider.redrawColorTable();
 	ForecastTables.rescale();
 };
 
 $(document).keyup(function(e) {
-	  if (e.keyCode === 27) MainControl.hidePopup();   // esc
+	  if (e.keyCode === 27) MainControl.hidePopup();	// esc
+	  //else if (e.keyCode === 13) MainControl.hidePopup(); // return
 	});
+
+// callback for google places api
+var autocomplete;
+var geocoder;
+var searchBounds;
+function initPlaces(){
+	console.log("initPlaces");
+	searchBounds = new google.maps.LatLngBounds(
+	          new google.maps.LatLng( 41.43, -4.96), //sw
+	          new google.maps.LatLng( 51.4, 15.72 ) //ne
+	        );
+	autocomplete = new google.maps.places.Autocomplete(document.getElementById("search_input"),{types:['geocode'], bounds:searchBounds});
+	
+	autocomplete.addListener('place_changed', function(){URLGenerator.search();});
+	
+	geocoder = new google.maps.Geocoder;
+}

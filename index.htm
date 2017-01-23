@@ -13,11 +13,13 @@
     <script src="https://meteo-parapente.com/config/couleurs.php"></script>
     <script src="ext/urlobject.js"></script>
     <script src="ext/base64.min.js"></script>
-    <script src="js/urlGenerator.js"></script>
+    <script src="js/search.js"></script>
     <script src="js/weatherData.js"></script>
     <script src="js/forecastDrawer.js"></script>
     <script src="js/forecastTable.js"></script>
     <script src="script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCrP5uoEJXfEvz8f_y1HgzQnqUGHz0Aak&libraries=places&callback=initPlaces"
+        async defer></script>
   </head>
   
   <body>
@@ -56,11 +58,12 @@
 		<h1 style="text-align: center">Paragliding Weather Forecasts</h1>
 		<h4 style="text-align: center">powered by <a href="https://meteo-parapente.com/">Météo Parapente</a></h4>
 		<div style="padding: 10px;">
-		<form action="javascript:URLGenerator.search();" >
+		<!-- form action="javascript:URLGenerator.search();" -->
+    	<form onsubmit="javascript:return false;">
     		<input type="text" id="search_input" placeholder="Search..."
     				style="display: inline-block; width:280px; font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size:15px;">
     		<br>
-    		<input type="submit" value="Search">
+    		<!-- input type="submit" value="Search"-->
 		</form>
 		</div>
 		<div style="display: table; margin-right:auto; margin-left:auto; text-align: left;">

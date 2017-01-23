@@ -121,6 +121,7 @@ function ForecastTable(coords, name){
 				}
 				ForecastDrawer.rescaleCanvas(this.canvases[day][topic][element], scale);
 				this.clearElement(this.table[topic][element][day]).appendChild(this.canvases[day][topic][element]);
+				this.table[topic][element][day].style.verticalAlign="bottom";
 			}
 		}
 		//console.log(this.canvases);
