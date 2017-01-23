@@ -1,6 +1,7 @@
 var locations = {
-		"K&ouml;ssen":[47.654033, 12.420704],
+		"K&ouml;ssen":[47.625305, 12.445411],
 		"Siegritz":[49.855715, 11.220393],
+		"Walberla":[49.716694, 11.159013]
 };
 
 var URLObject = new urlObject();
