@@ -3,7 +3,7 @@ function ControlFlowEvent(numInputs){
 	this.numNotFinished = numInputs;
 	this.children = [];
 	
-	this.runAfter = function(callback){
+	this.then = function(callback){
 		if(numNotFinished == 0){
 			callback();
 		} else {
@@ -11,20 +11,20 @@ function ControlFlowEvent(numInputs){
 		}
 	};
 	
-	
-	this.wakeupAllChildren = function(){
-		for(var i = 0; i < children.length; i++){
-			children[i]();
+	this.parentDone = function(){
+		this.numNotFinished--;
+		if(this.numNotFinished < 0){
+			console.warn("ControlFlowEvent numNotFinished < 0");
+		}
+		if(this.numNotFinished == 0){
+			for(var i = 0; i < children.length; i++){
+				children[i]();
+			}
 		}
 	};
 	
 	this.getCallback = function(){
-		return function(){
-			this.numNotFinished--;
-			if(this.numNotFinished == 0){
-				this.wakeupAllChildren();
-			}
-		}.bind(this);
+		return this.parentDone.bind(this);
 	};
 	
 	
