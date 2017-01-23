@@ -13,6 +13,7 @@
     <script src="https://meteo-parapente.com/config/couleurs.php"></script>
     <script src="ext/urlobject.js"></script>
     <script src="ext/base64.min.js"></script>
+    <script src="js/urlGenerator.js"></script>
     <script src="js/weatherData.js"></script>
     <script src="js/forecastDrawer.js"></script>
     <script src="js/forecastTable.js"></script>
@@ -20,6 +21,13 @@
   </head>
   
   <body>
+  	<div id="fullscreenDisabler" class="centerPseudo" onclick="MainControl.hidePopup()">
+		
+	</div>
+		<div id="popupWindow" onclick="console.log(40); return false;">test<BR>test2<BR>test3</div>
+  	<!--div id="popupWindowWrapper" onclick="console.log(30)">
+	</div-->
+  	
   	<div id="left_bar">
   	</div>
   	<div id="right_bar">
@@ -44,10 +52,18 @@
 		  	</div>
 	  	</div>
   	</div>
-  	<div id="main">
+  	<div id="main" style="text-align: center">
 		<h1 style="text-align: center">Paragliding Weather Forecasts</h1>
 		<h4 style="text-align: center">powered by <a href="https://meteo-parapente.com/">Météo Parapente</a></h4>
-		<div style="display: table; margin-right:auto; margin-left:auto;">
+		<div style="padding: 10px;">
+		<form action="javascript:URLGenerator.search();" >
+    		<input type="text" id="search_input" placeholder="Search..."
+    				style="display: inline-block; width:280px; font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size:15px;">
+    		<br>
+    		<input type="submit" value="Search">
+		</form>
+		</div>
+		<div style="display: table; margin-right:auto; margin-left:auto; text-align: left;">
 			<div id="forecastTables"></div>
 	  	</div>
 	  	<div class="sidebutton" id="rightSidebarButton" style="cursor: pointer;" 

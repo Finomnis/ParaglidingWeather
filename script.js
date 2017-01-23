@@ -42,7 +42,8 @@ function ForecastTablesClass(){
 			if(scale > 1) scale = 1;
 			
 			var div = document.createElement("div");
-			div.innerHTML="<BR>";
+			//div.innerHTML="<BR>";
+			div.style.margin="3vw";
 			var h2 = document.createElement("h2");
 			h2.style.fontSize=24*scale+"px";
 			h2.innerHTML=name;
@@ -166,6 +167,7 @@ function ColorTableSliderClass(){
 	};
 	
 }
+var ColorTableSlider = new ColorTableSliderClass();
 
 function closeRightSidebar(){
 	document.getElementById("main").style.marginRight="0vh";
@@ -185,7 +187,36 @@ function openRightSidebar(){
 	document.getElementById("rightSidebarButton").style.marginRight="25vh";
 }
 
-var ColorTableSlider = new ColorTableSliderClass();
+function MainControlClass(){
+	
+	this.disablePage = function(){
+		var disabler = document.getElementById("fullscreenDisabler");
+		disabler.style.display="block";
+	};
+	
+	this.enablePage = function(){
+		var disabler = document.getElementById("fullscreenDisabler");
+		disabler.style.display="none";
+	};
+	
+	this.showPopup = function(){
+		this.disablePage();
+		var popup = document.getElementById("popupWindow");
+		popup.style.display="inline-block";
+		while (popup.firstChild) {
+			popup.removeChild(popup.firstChild);
+		}
+		return popup;
+	};
+	this.hidePopup = function(){
+		this.enablePage();
+		var popup = document.getElementById("popupWindow");
+		popup.style.display="none";
+	};
+}
+var MainControl = new MainControlClass();
+
+
 
 function URLCoderClass(){
 	this.encodeBase64 = function(obj){
@@ -196,7 +227,6 @@ function URLCoderClass(){
 		return JSON.parse(Base64.decode(str));
 	};
 }
-
 var URLCoder = new URLCoderClass();
 
 $(document).ready(function(){
