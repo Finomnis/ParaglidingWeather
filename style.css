@@ -65,19 +65,17 @@ canvas, div {
 
 #popupWindow {
 	position: absolute;
-	display: none;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+  	display: none;
 	background-color: #111;
   	opacity: 1.0;
   	border-radius: 15px;
   	border: 15px solid #111;
-  	width: 1px;
-  	height: 1px;
-  	margin: auto;
-  	left:0px;
-  	right:0px;
-  	top:0px;
-  	bottom:0px;
   	z-index: 11;
+  	color: rgb(200,200,200);
 }
 
 

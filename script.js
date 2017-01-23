@@ -202,7 +202,7 @@ function MainControlClass(){
 	this.showPopup = function(){
 		this.disablePage();
 		var popup = document.getElementById("popupWindow");
-		popup.style.display="inline-block";
+		popup.style.display="block";
 		while (popup.firstChild) {
 			popup.removeChild(popup.firstChild);
 		}
@@ -246,3 +246,7 @@ window.onresize = function(){
 	ColorTableSlider.redrawColorTable();
 	ForecastTables.rescale();
 };
+
+$(document).keyup(function(e) {
+	  if (e.keyCode === 27) MainControl.hidePopup();   // esc
+	});
