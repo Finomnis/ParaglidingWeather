@@ -118,14 +118,21 @@ canvas, div {
  * SEARCH BAR
  ********************************************/
 .pac-matched, .pac-item-query {
-	font-size: 20px;
+	font-size: 17px;
 }
 .pac-item-query {
 	padding-right: 5px;
 }
 .pac-item {
-	font-size: 15px;
+	font-size: 13px;
 }
+#search_input {
+	display: inline-block;
+	width:350px;
+	font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+	font-size:20px;
+}
+
 /********************************************
  * SIDEBAR RIGHT
  ********************************************/
