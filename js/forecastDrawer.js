@@ -116,6 +116,8 @@ function ForecastDrawerClass(){
 	
 	this.rescaleCanvas = function(canvas, scale){
 		canvas.style.width=Math.round((canvas.width/this.overscale)*scale) + "px";
+		canvas.style.height=Math.round((canvas.height/this.overscale)*scale) + "px";
+		
 	};
 	
 	this.createCanvas = function(width, height, scale){
