@@ -337,6 +337,32 @@ function ForecastDrawerClass(){
 		ctx.stroke();
 	};
 	
+	this.drawColorArrowLine = function(data, typeX, typeY, getColorCallback, cellWidth, cellHeight, scale){
+		
+		var numTimes = Object.keys(data).length;
+		
+		var canvas = this.createCanvas(numTimes*cellWidth, cellHeight, scale);
+		
+		var paintWidth = cellWidth * this.overscale;
+		var paintHeight = cellHeight * this.overscale;
+		
+		var ctx = canvas.getContext("2d");
+		
+		for(var i = 0; i < numTimes; i++){
+			var currentData = data[Object.keys(data)[i]];
+			var valX = currentData[typeX];
+			var valY = currentData[typeY];
+			var val = Math.sqrt(valX*valX+valY*valY);
+			var dirX = valX/val;
+			var dirY = valY/val;
+			var col = getColorCallback(val);
+			ctx.fillStyle = "rgb("+Math.round(col[0])+","+Math.round(col[1])+","+Math.round(col[2])+")";
+			ctx.fillRect(i*paintWidth,0,paintWidth,paintHeight);
+			this.drawArrow(ctx, dirX, dirY, i*paintWidth, 0, paintWidth, paintHeight);
+		}	
+		return canvas;
+	};
+	
 	this.drawColorArrowHeightLine = function(data, typeX, typeY, height, getColorCallback, cellWidth, cellHeight, scale){
 		
 		var numTimes = Object.keys(data).length;

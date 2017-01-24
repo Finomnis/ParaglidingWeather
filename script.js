@@ -4,6 +4,8 @@ var locations = {
 		"Walberla":[49.716694, 11.159013]
 };
 
+var timePoints = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
+
 var URLObject = new urlObject();
 
 function ForecastTablesClass(){

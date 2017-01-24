@@ -14,7 +14,7 @@ function ForecastTable(coords, name){
 		this.inAlps = true;
 	}
 		
-	this.time_points = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
+	this.time_points = timePoints;
 	this.windMapMaxHeight = 4050;
 	this.cloudMapMaxHeight = 5050;
 	
@@ -109,7 +109,18 @@ function ForecastTable(coords, name){
 			}
 	};
 	
-
+	
+	this.constructFoehnRow = function(data, scale){
+		return ForecastDrawer.drawColorArrowLine(data, "ufoehn", "vfoehn",
+				function(val){
+					return Color.get("PAL_WIND",val*2.3125);
+				},
+				16, 16, scale);
+	};
+	
+	if(this.inAlps){
+		this.tableElements["Wind"]['<a href="http://www.meteocentrale.ch/de/wetter/foehn-und-bise/foehn.html">F&ouml;hn</href>'] = this.constructFoehnRow.bind(this);
+	}
 	
 	this.clearElement = function(element){
 		while (element.firstChild) {

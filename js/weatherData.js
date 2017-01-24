@@ -20,12 +20,71 @@ function WeatherDataClass(){
 				heures : hours.join(";"),
 				params : params.join(";")				
 			},
-			success: function(data){
-				callback(data[coords_str]);
-			}
+			success: function(day,data){
+				this.foehnDataFetched[day].then(function(day,data){
+					var cdata = data[coords_str];
+					//console.log(cdata);
+					for(var i in cdata[day]){
+						cdata[day][i]["ufoehn"] = 0;
+						cdata[day][i]["vfoehn"] = this.foehnData[day][i];
+					}
+					callback(cdata);
+				}.bind(this,day,data));
+			}.bind(this,day)
 		});
 	};
-		
+	
+	
+	this.foehnData = {};
+	this.foehnDataFetched = {};
+	this.foehnPosZuerich="47.380688,8.529504";
+	this.foehnPosLugano="46.004534,8.951523";
+	
+	this.startFoehnFetching = function(){
+		this.foehnData = {};
+		this.foehnDataFetched = {};
+		for(var day in this.runDays){
+			this.foehnDataFetched[day] = new ControlFlowEvent(1);
+			this.fetchFoehn(day, timePoints, function(day, data){
+				var foehnStrengths = {};
+				var foehnDataZuerich = data[this.foehnPosZuerich][day];
+				var foehnDataLugano = data[this.foehnPosLugano][day];
+				//console.log(data);
+				//console.log(foehnDataZuerich);
+				//console.log(foehnDataLugano);
+				
+				for(var time in foehnDataZuerich){
+					foehnStrengths[time] = foehnDataLugano[time]["slp"]  - foehnDataZuerich[time]["slp"];
+				}
+				
+				this.foehnData[day] = foehnStrengths;
+				
+				this.foehnDataFetched[day].parentDone();
+			}.bind(this,day));
+		}
+	};
+	
+	this.fetchFoehn = function(day, hours, callback){
+		var runDay= this.runDays[day];
+		var coords_str = this.foehnPosZuerich + ";" + this.foehnPosLugano;
+		$.ajax({
+			url: "https://data0.meteo-parapente.com/json.php",
+			dataType: "jsonp",
+			data: {
+				domain: this.domain,
+				run: runDay,
+				places : coords_str,
+				dates : day,
+				heures : hours.join(";"),
+				params : "slp"				
+			},
+			success: function(callback,data){
+				callback(data);
+			}.bind(this,callback)
+		});
+		console.log("a");
+	};
+	
 	this.refreshAll = function(redrawCallback){
 		$.ajax({
 			url: "https://data0.meteo-parapente.com/status.php",
@@ -68,6 +127,7 @@ function WeatherDataClass(){
 				}
 				// After update, redraw the forecast tables
 				this.dataValid = true;
+				this.startFoehnFetching();
 				redrawCallback();
 			},this,redrawCallback)
 		});

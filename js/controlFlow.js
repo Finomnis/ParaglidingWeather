@@ -4,10 +4,10 @@ function ControlFlowEvent(numInputs){
 	this.children = [];
 	
 	this.then = function(callback){
-		if(numNotFinished == 0){
+		if(this.numNotFinished == 0){
 			callback();
 		} else {
-			children.push(callback);
+			this.children.push(callback);
 		}
 	};
 	
@@ -17,8 +17,8 @@ function ControlFlowEvent(numInputs){
 			console.warn("ControlFlowEvent numNotFinished < 0");
 		}
 		if(this.numNotFinished == 0){
-			for(var i = 0; i < children.length; i++){
-				children[i]();
+			for(var i = 0; i < this.children.length; i++){
+				this.children[i]();
 			}
 		}
 	};
