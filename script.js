@@ -150,7 +150,7 @@ function ColorTableSliderClass(){
 				"b_s_ratio": ["PAL_BSRATIO", 1, null],
 				"bl_top": ["PAL_CBASE", 1, "m"],
 				"bl_vmotion": ["PAL_CONVERGENCE", 0.01, "m/s"],
-				"foehn": ["PAL_WIND", 1/2.3125, "hPa"]
+				"foehn": ["PAL_WIND", 0.54, "hPa"]
 			};
 		
 		

@@ -113,13 +113,13 @@ function ForecastTable(coords, name){
 	this.constructFoehnRow = function(data, scale){
 		return ForecastDrawer.drawColorArrowLine(data, "ufoehn", "vfoehn",
 				function(val){
-					return Color.get("PAL_WIND",val*2.3125);
+					return Color.get("PAL_WIND",val/0.54);
 				},
 				16, 16, scale);
 	};
 	
 	if(this.inAlps){
-		this.tableElements["Wind"]['<a href="http://www.meteocentrale.ch/de/wetter/foehn-und-bise/foehn.html">F&ouml;hn</href>'] = this.constructFoehnRow.bind(this);
+		this.tableElements["Wind"]['<a target="_blank" href="http://www.meteocentrale.ch/de/wetter/foehn-und-bise/foehn.html">F&ouml;hn</href>'] = this.constructFoehnRow.bind(this);
 	}
 	
 	this.clearElement = function(element){
