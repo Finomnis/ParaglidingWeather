@@ -126,6 +126,7 @@ function WeatherDataClass(){
 					if(found == false) break;
 				}
 				// After update, redraw the forecast tables
+				console.log(this.runDays);
 				this.dataValid = true;
 				this.startFoehnFetching();
 				redrawCallback();

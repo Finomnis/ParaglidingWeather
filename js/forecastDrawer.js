@@ -232,12 +232,13 @@ function ForecastDrawerClass(){
 		var clientRect = div.getBoundingClientRect();
 		
 		var canvas = document.createElement("canvas");
-		var canvas_width = Math.round(clientRect.width);
-		var canvas_height = Math.round(clientRect.height);
-		var inner_height = Math.round(canvas_height * 86/90);
-		var inner_offset = Math.round(canvas_height * 2/90);
+		var canvas_width = this.overscale*Math.round(clientRect.width);
+		var canvas_height = this.overscale*Math.round(clientRect.height);
+		var inner_height = this.overscale*Math.round(clientRect.height * 86/90);
+		var inner_offset = this.overscale*Math.round(clientRect.height * 2/90);
 		canvas.width = canvas_width;
 		canvas.height = canvas_height;
+		canvas.style.width= canvas_width/this.overscale + "px";
 		var ctx = canvas.getContext("2d");
 		
 		canvas.style.position="absolute";
@@ -263,7 +264,7 @@ function ForecastDrawerClass(){
 		ctx.font = fontSize + "px Arial";
 		ctx.textAlign="left";
 		ctx.textBaseline="middle"; 
-		ctx.lineWidth = 0;
+		ctx.lineWidth = this.overscale;
 		for(var i = 0; i < colorPalette.length; i++){
 			var val = Math.round(colorPalette[colorPalette.length - 1 - i][0] * prefactor * 10) / 10;
 			ctx.beginPath();

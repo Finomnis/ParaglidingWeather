@@ -114,7 +114,18 @@ canvas, div {
   100% { transform: rotate(360deg); }
 }
  
- 
+/********************************************
+ * SEARCH BAR
+ ********************************************/
+.pac-matched, .pac-item-query {
+	font-size: 20px;
+}
+.pac-item-query {
+	padding-right: 5px;
+}
+.pac-item {
+	font-size: 15px;
+}
 /********************************************
  * SIDEBAR RIGHT
  ********************************************/
