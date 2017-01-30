@@ -15,8 +15,8 @@ function ForecastTable(coords, name){
 	}
 		
 	this.time_points = timePoints;
-	this.windMapMaxHeight = 4050;
-	this.cloudMapMaxHeight = 5050;
+	this.windMapMaxHeight = 5300;//4050;
+	this.cloudMapMaxHeight = 11000;//5050;
 	
 	this.table = {};
 	this.mapsLink = {};
