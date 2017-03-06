@@ -25,8 +25,10 @@ function WeatherDataClass(){
 					var cdata = data[coords_str];
 					//console.log(cdata);
 					for(var i in cdata[day]){
-						cdata[day][i]["ufoehn"] = 0;
-						cdata[day][i]["vfoehn"] = this.foehnData[day][i];
+						cdata[day][i]["ufoehnch"] = 0;
+						cdata[day][i]["vfoehnch"] = this.foehnDataSwiss[day][i];
+						cdata[day][i]["ufoehnat"] = 0;
+						cdata[day][i]["vfoehnat"] = this.foehnDataAustria[day][i];
 					}
 					callback(cdata);
 				}.bind(this,day,data));
@@ -35,10 +37,13 @@ function WeatherDataClass(){
 	};
 	
 	
-	this.foehnData = {};
+	this.foehnDataSwiss = {};
+	this.foehnDataAustria = {};
 	this.foehnDataFetched = {};
 	this.foehnPosZuerich="47.380688,8.529504";
 	this.foehnPosLugano="46.004534,8.951523";
+	this.foehnPosBozen="46.49926,11.35661";
+	this.foehnPosInnsbruck="47.267222,11.392778";
 	
 	this.startFoehnFetching = function(){
 		this.foehnData = {};
@@ -46,18 +51,23 @@ function WeatherDataClass(){
 		for(var day in this.runDays){
 			this.foehnDataFetched[day] = new ControlFlowEvent(1);
 			this.fetchFoehn(day, timePoints, function(day, data){
-				var foehnStrengths = {};
+				var foehnStrengthsSwiss = {};
+				var foehnStrengthsAustria = {};
 				var foehnDataZuerich = data[this.foehnPosZuerich][day];
 				var foehnDataLugano = data[this.foehnPosLugano][day];
-				//console.log(data);
+				var foehnDataBozen = data[this.foehnPosBozen][day];
+				var foehnDataInnsbruck = data[this.foehnPosInnsbruck][day];
+				console.log(data);
 				//console.log(foehnDataZuerich);
 				//console.log(foehnDataLugano);
 				
 				for(var time in foehnDataZuerich){
-					foehnStrengths[time] = foehnDataLugano[time]["slp"]  - foehnDataZuerich[time]["slp"];
+					foehnStrengthsSwiss[time] = foehnDataLugano[time]["slp"]  - foehnDataZuerich[time]["slp"];
+					foehnStrengthsAustria[time] = foehnDataBozen[time]["slp"]  - foehnDataInnsbruck[time]["slp"];
 				}
 				
-				this.foehnData[day] = foehnStrengths;
+				this.foehnDataSwiss[day] = foehnStrengthsSwiss;
+				this.foehnDataAustria[day] = foehnStrengthsAustria;
 				
 				this.foehnDataFetched[day].parentDone();
 			}.bind(this,day));
@@ -66,7 +76,7 @@ function WeatherDataClass(){
 	
 	this.fetchFoehn = function(day, hours, callback){
 		var runDay= this.runDays[day];
-		var coords_str = this.foehnPosZuerich + ";" + this.foehnPosLugano;
+		var coords_str = this.foehnPosZuerich + ";" + this.foehnPosLugano + ";" + this.foehnPosBozen + ";" + this.foehnPosInnsbruck;
 		$.ajax({
 			url: "https://data0.meteo-parapente.com/json.php",
 			dataType: "jsonp",

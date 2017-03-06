@@ -1,17 +1,29 @@
-var alpsPolygon;
+//var alpsPolygon;
+var alpsChPolygon;
+var alpsAtPolygon;
 
 var initializeAlpsPolygon = function(){
-	alpsPolygon = new google.maps.Polygon({
-		paths: [{"lat":48.15875730456923,"lng":11.063232421875},{"lat":48.45835188280866,"lng":16.67724609375},{"lat":46.73233101286786,"lng":16.50146484375},{"lat":45.66780526567164,"lng":13.458251953125},{"lat":44.707706221835345,"lng":10.6787109375},{"lat":44.91813929958515,"lng":9.173583984375},{"lat":43.34914966389312,"lng":8.4375},{"lat":43.16512263158295,"lng":5.592041015625},{"lat":45.01141864227728,"lng":4.207763671875},{"lat":47.092565552235705,"lng":5.625},{"lat":48.04136507445029,"lng":8.426513671875}]
+//	alpsPolygon = new google.maps.Polygon({
+//		paths: [{"lat":48.15875730456923,"lng":11.063232421875},{"lat":48.45835188280866,"lng":16.67724609375},{"lat":46.73233101286786,"lng":16.50146484375},{"lat":45.66780526567164,"lng":13.458251953125},{"lat":44.707706221835345,"lng":10.6787109375},{"lat":44.91813929958515,"lng":9.173583984375},{"lat":43.34914966389312,"lng":8.4375},{"lat":43.16512263158295,"lng":5.592041015625},{"lat":45.01141864227728,"lng":4.207763671875},{"lat":47.092565552235705,"lng":5.625},{"lat":48.04136507445029,"lng":8.426513671875}]
+//	});
+	alpsChPolygon = new google.maps.Polygon({
+		paths: [new google.maps.LatLng(44.83689,10.74248), new google.maps.LatLng(44.87656,8.82932), new google.maps.LatLng(44.16448,8.05873), new google.maps.LatLng(46.73728,4.00992), new google.maps.LatLng(48.26937,9.28233)]
+	});
+	alpsAtPolygon = new google.maps.Polygon({
+		paths: [new google.maps.LatLng(44.83689,10.74248), new google.maps.LatLng(45.41195,15.7931), new google.maps.LatLng(48.89114,15.0402), new google.maps.LatLng(48.26937,9.28233)]
 	});
 };
 
 
 function ForecastTable(coords, name){
 	
-	this.inAlps = false;
-	if(google.maps.geometry.poly.containsLocation(new google.maps.LatLng(coords.lat,coords.lon), alpsPolygon)){
-		this.inAlps = true;
+	this.inAlpsAt = false;
+	if(google.maps.geometry.poly.containsLocation(new google.maps.LatLng(coords.lat,coords.lon), alpsAtPolygon)){
+		this.inAlpsAt = true;
+	}
+	this.inAlpsCh = false;
+	if(google.maps.geometry.poly.containsLocation(new google.maps.LatLng(coords.lat,coords.lon), alpsChPolygon)){
+		this.inAlpsCh = true;
 	}
 		
 	this.time_points = timePoints;
@@ -110,16 +122,18 @@ function ForecastTable(coords, name){
 	};
 	
 	
-	this.constructFoehnRow = function(data, scale){
-		return ForecastDrawer.drawColorArrowLine(data, "ufoehn", "vfoehn",
+	this.constructFoehnRow = function(country, data, scale){
+		return ForecastDrawer.drawColorArrowLine(data, "ufoehn" + country, "vfoehn" + country,
 				function(val){
 					return Color.get("PAL_WIND",val/0.54);
 				},
 				16, 16, scale);
 	};
 	
-	if(this.inAlps){
-		this.tableElements["Wind"]['<a target="_blank" href="http://www.meteocentrale.ch/de/wetter/foehn-und-bise/foehn.html">F&ouml;hn</href>'] = this.constructFoehnRow.bind(this);
+	if(this.inAlpsAt){
+		this.tableElements["Wind"]['<a target="_blank" href="http://www.wetteralarm.at/de/wetter/foehndiagramme/foehn-in-den-alpen.html">F&ouml;hn</href>'] = this.constructFoehnRow.bind(this, "at");
+	} else if (this.inAlpsCh){
+		this.tableElements["Wind"]['<a target="_blank" href="http://www.meteocentrale.ch/de/wetter/foehn-und-bise/foehn.html">F&ouml;hn</href>'] = this.constructFoehnRow.bind(this, "ch");
 	}
 	
 	this.clearElement = function(element){
