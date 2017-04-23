@@ -5,7 +5,7 @@ function URLGeneratorClass(){
 			MainControl.showMessage("'" + place.formatted_address + "' is outside of the data boundary!");
 			return;
 		}
-		window.location.href = window.location.origin + window.location.pathname + "?placeID=" + place.place_id;
+		window.location.href = window.location.origin + window.location.pathname + "?lang=" + Labels.currentLang + "&placeID=" + place.place_id;
 	};
 	
 	this.enterWebsiteCoords = function(lat, lng){
@@ -16,7 +16,7 @@ function URLGeneratorClass(){
 		}
 		var locs = {};
 		locs["Coords (" + lat + ", " + lng + ")"] = [lat,lng];
-		window.location.href = window.location.origin + window.location.pathname + "?locations=" + URLCoder.encodeBase64(locs);
+		window.location.href = window.location.origin + window.location.pathname + "?lang=" + Labels.currentLang + "&locations=" + URLCoder.encodeBase64(locs);
 	};
 	
 	this.search = function(){
