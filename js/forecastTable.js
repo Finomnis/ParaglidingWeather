@@ -103,6 +103,7 @@ function ForecastTable(coords, name){
 	
 	this.tableElements = {
 			"weather":{
+				"table_temp": this.constructRow.bind(this,"tc2", "PAL_TEMP"),
 				"table_clouds": this.constructCloudMap.bind(this),
 				"table_rain": this.constructRow.bind(this,"raintot", "PAL_RAIN")
 			},
@@ -189,7 +190,7 @@ function ForecastTable(coords, name){
 		this.canvases = {};
 		for(day in days){
 			// Send one async load for every day required
-			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra", "raintot", "wstar", "bsratio", "pblh", "ter", "blwindshear", "wblmaxmin"],
+			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra", "raintot", "wstar", "bsratio", "pblh", "tc2", "ter", "blwindshear", "wblmaxmin"],
 				function(day, scale, data){
 					// retreive coordinates from one of the loads
 					if(day === WeatherData.today){

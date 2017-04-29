@@ -145,6 +145,7 @@ function ColorTableSliderClass(){
 	this.updateColorTable = function(){
 
 		var availableColorTables = {
+				"temp": ["PAL_TEMP", 1, "&#8451;"],
 				"wind": ["PAL_WIND", 3.6, "km/h"],
 				"thermal_vel": ["PAL_THERMIQUES", 1, "m/s"],
 				"b_s_ratio": ["PAL_BSRATIO", 1, null],
