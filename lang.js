@@ -55,7 +55,11 @@ function LabelsClass(){
 			"table_therm_blvmot": "BL Vertical Motion",
 			"table_foehn_at": '<a target="_blank" href="http://www.wetteralarm.at/de/wetter/foehndiagramme/foehn-in-den-alpen.html">F&ouml;hn</href>',
 			"table_foehn_ch": '<a target="_blank" href="http://www.meteocentrale.ch/de/wetter/foehn-und-bise/foehn.html">F&ouml;hn</href>',
-			"change_language": '<a href="' + this.strippedURL + 'lang=de">Deutsch</a>'
+			"change_language": '<a href="' + this.strippedURL + 'lang=de">Deutsch</a>',
+			"search_not_found":  "not found!",
+			"search_outside_boundary": "is outside of the data boundary!",
+			"search_coordinate": "Coords",
+			"search_coord_outside": "are outside of the data boundary!"
 		},
 		"de": {
 			"page_header": "Gleitschirm Wetterbericht",
@@ -98,7 +102,11 @@ function LabelsClass(){
 			"table_therm_blvmot": "Aufwind",
 			"table_foehn_at": '<a target="_blank" href="http://www.wetteralarm.at/de/wetter/foehndiagramme/foehn-in-den-alpen.html">F&ouml;hn</href>',
 			"table_foehn_ch": '<a target="_blank" href="http://www.meteocentrale.ch/de/wetter/foehn-und-bise/foehn.html">F&ouml;hn</href>',
-			"change_language": '<a href="' + this.strippedURL + 'lang=en">English</a>'
+			"change_language": '<a href="' + this.strippedURL + 'lang=en">English</a>',
+			"search_not_found":  "nicht gefunden!",
+			"search_outside_boundary": "liegt au&szligerhalb des Vorhersagebereichs!",
+			"search_coordinate": "Koordinaten",
+			"search_coord_outside": "liegen au&szligerhalb des Vorhersagebereichs!"
 		}
 	};
 	

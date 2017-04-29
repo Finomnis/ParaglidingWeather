@@ -2,7 +2,7 @@ function URLGeneratorClass(){
 	
 	this.enterWebsite = function(place){
 		if(!searchBounds.contains(place.geometry.location)){
-			MainControl.showMessage("'" + place.formatted_address + "' is outside of the data boundary!");
+			MainControl.showMessage("'" + place.formatted_address + "' " + label("search_outside_boundary"));
 			return;
 		}
 		window.location.href = window.location.origin + window.location.pathname + "?lang=" + Labels.currentLang + "&placeID=" + place.place_id;
@@ -11,7 +11,7 @@ function URLGeneratorClass(){
 	this.enterWebsiteCoords = function(lat, lng){
 		var coords = new google.maps.LatLng(lat, lng);
 	    if(!searchBounds.contains(coords)){
-			MainControl.showMessage("Coords (" + lat + ", " + lng + ") are outside of the data boundary!");
+			MainControl.showMessage(label("search_coordinate") + " (" + lat + ", " + lng + ") " + label("search_coord_outside"));
 			return;
 		}
 		var locs = {};
@@ -38,7 +38,7 @@ function URLGeneratorClass(){
 					if(status === 'OK'){
 					    this.enterWebsite(results[0]);
 					} else {
-						MainControl.showMessage("'" + place.name + "' not found!");
+						MainControl.showMessage("'" + place.name + "' " + label("search_not_found"));
 					}
 				}.bind(this, place));
 			}
