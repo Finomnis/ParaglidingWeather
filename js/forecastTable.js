@@ -57,7 +57,9 @@ function ForecastTable(coords, name){
 										  function (data) {
 											  var gray = 100*data + 255*(1-data);
 											  return [gray,gray,gray];
-										  }, 16, 3, scale);
+										  },
+										  "rgba(200,0,180,1.0)",
+										  16, 3, scale);
 	};
 		
 	this.constructWindMap = function(data, scale){
@@ -69,6 +71,7 @@ function ForecastTable(coords, name){
 											  return Math.sqrt(umet*umet+vmet*vmet);
 										  },
 										  Color.get.bind(Color, "PAL_WIND"),
+										  "rgba(200,0,180,1.0)",
 										  16, 3, scale
 			);
 	};

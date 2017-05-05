@@ -90,7 +90,11 @@ function ForecastDrawerClass(){
 		return id;
 	};
 	
-	this.drawDataMap = function(data, maxHeight, getDataCallback, getColorCallback, cellWidth, cellHeight, scale){
+	this.getBLEntry = function(data, time){
+		return this.getNumEntries(data, data[time].pblh);
+	};
+	
+	this.drawDataMap = function(data, maxHeight, getDataCallback, getColorCallback, boundaryLayerColor, cellWidth, cellHeight, scale){
 	
 		var numHeights = this.getNumEntries(data, maxHeight);
 		
@@ -110,6 +114,8 @@ function ForecastDrawerClass(){
 				ctx.fillStyle = "rgb("+Math.round(col[0])+","+Math.round(col[1])+","+Math.round(col[2])+")";
 				ctx.fillRect(i*paintWidth,paintHeight*(numHeights-(height+1)),paintWidth,paintHeight);
 			}
+			ctx.fillStyle = boundaryLayerColor;
+			ctx.fillRect(i*paintWidth, paintHeight * (numHeights - (this.getBLEntry(data, Object.keys(data)[i])+1/3)), paintWidth, paintHeight*(2/3));
 		}	
 		return canvas;
 	};
