@@ -57,7 +57,7 @@ function WeatherDataClass(){
 				var foehnDataLugano = data[this.foehnPosLugano][day];
 				var foehnDataBozen = data[this.foehnPosBozen][day];
 				var foehnDataInnsbruck = data[this.foehnPosInnsbruck][day];
-				console.log(data);
+				//console.log(data);
 				//console.log(foehnDataZuerich);
 				//console.log(foehnDataLugano);
 				
@@ -92,7 +92,6 @@ function WeatherDataClass(){
 				callback(data);
 			}.bind(this,callback)
 		});
-		console.log("a");
 	};
 	
 	this.refreshAll = function(redrawCallback){
@@ -102,7 +101,7 @@ function WeatherDataClass(){
 			success: $.proxy(function(redrawCallback,data){
 				this.runDays = {};
 				this.domain = Object.keys(data)[0];
-				console.log(data);
+				//console.log(data);
 				data = data[this.domain];
 				var i;
 				var today = new Date();
@@ -136,7 +135,7 @@ function WeatherDataClass(){
 					if(found == false) break;
 				}
 				// After update, redraw the forecast tables
-				console.log(this.runDays);
+				//console.log(this.runDays);
 				this.dataValid = true;
 				this.startFoehnFetching();
 				redrawCallback();

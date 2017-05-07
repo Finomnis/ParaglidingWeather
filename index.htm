@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Paragliding Weather Forecast</title>
+    <title id="title"></title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="icon/favicon-16x16.png" sizes="16x16">
@@ -15,6 +15,7 @@
     <script src="https://meteo-parapente.com/config/couleurs.php"></script>
     <script src="ext/urlobject.js"></script>
     <script src="ext/base64.min.js"></script>
+    <script src="lang.js"></script>
     <script src="js/search.js"></script>
     <script src="js/weatherData.js"></script>
     <script src="js/forecastDrawer.js"></script>
@@ -22,33 +23,41 @@
     <script src="js/controlFlow.js"></script>
     <script src="events.js"></script>
     <script src="script.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCrP5uoEJXfEvz8f_y1HgzQnqUGHz0Aak&libraries=places,geometry&callback=initPlaces"
-        async defer></script>
+    <!-- script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCrP5uoEJXfEvz8f_y1HgzQnqUGHz0Aak&libraries=places,geometry&callback=initPlaces&language=de"
+        async defer></script-->
+	<script id="google_apis_script"></script>
+	<script>
+		document.getElementById('google_apis_script').src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBCrP5uoEJXfEvz8f_y1HgzQnqUGHz0Aak&libraries=places,geometry&callback=initPlaces&language=" + Labels.currentLang;
+	</script>
   </head>
   
   <body>
+  	
+  	<!-- Disables the popup on click on background -->
   	<div id="fullscreenDisabler" class="centerPseudo" onclick="MainControl.hidePopup()">
-		
 	</div>
-		<div id="popupWindow" onclick="console.log(40); return false;">test<BR>test2<BR>test3</div>
+	<div id="popupWindow" onclick="console.log(40); return false;">test<BR>test2<BR>test3</div>
+  	
   	<!--div id="popupWindowWrapper" onclick="console.log(30)">
 	</div-->
   	
-  	<div id="left_bar">
-  	</div>
+  	<!-- div id="left_bar">
+  	</div-->
+  	
   	<div id="right_bar">
   		<div class="content_wrapper">
 	  		<div class="header_wrapper">
-	  			<h1>Colortables</h1>
+	  			<h1 id="colortables_header"></h1>
 	  		</div>
 	  		<div class="selection_wrapper">
 		  		<select name="Table Type" id="color_table_select" onchange="ColorTableSlider.updateColorTable()">
-				  <option value="wind" selected>Wind</option>
-				  <option value="thermal_vel">Thermal Velocity</option>
-				  <option value="b_s_ratio">B/S Ratio</option>
-				  <option value="bl_top">BL Top</option>
-				  <option value="bl_vmotion">BL Vertical Motion</option>
-				  <option value="foehn">F&ouml;hn</option>
+				  <option id="option_wind" value="wind" selected></option>
+				  <option id="option_thermal_vel" value="thermal_vel"></option>
+				  <option id="option_b_s_ratio" value="b_s_ratio"></option>
+				  <option id="option_bl_top" value="bl_top"></option>
+				  <option id="option_bl_vmotion" value="bl_vmotion"></option>
+				  <option id="option_foehn" value="foehn"></option>
+				  <option id="option_temp" value="temp"></option>
 				</select>
 			</div>
 			<div class="colortable_wrapper">
@@ -59,31 +68,52 @@
 		  	</div>
 	  	</div>
   	</div>
+  	
   	<div id="main" style="text-align: center;">
-  		<div style="position: absolute; left: 0px; top: 0px; text-align:left; color:gray; font-size: 12px;">
-  			No responsibility is accepted for<br>the accuracy of this information.
-  		</div>
-		<div onclick="javascript:window.location.href=window.location.origin+window.location.pathname" style="cursor: pointer;">
-			<h1 style="text-align: center; font-size: 35px; margin-top: 50px;">Paragliding Weather Forecast</h1>
+  		<div style="position: absolute; left: 0px; top: 0px; text-align:left; color:gray; font-size: 12px;" id="disclaimer"></div>
+  		<div style="position: fixed; left: 5px; bottom: 5px; text-align:left; color:gray; font-size: 15px;" id="change_language"></div>
+		
+		<div onclick="javascript:window.location.href=window.location.origin+window.location.pathname+'?lang='+Labels.currentLang" style="cursor: pointer;">
+			<h1 id="title_header" style="text-align: center; font-size: 35px; margin-top: 50px;"></h1>
 		</div>
-		<h4 style="text-align: center; font-size: 20px;">powered by <a href="https://meteo-parapente.com/">Météo Parapente</a></h4>
+		
+		<h4 id="parapente_ref" style="text-align: center; font-size: 20px;"></h4>
+		
 		<div style="padding: 10px;">
-		<!-- form action="javascript:URLGenerator.search();" -->
-    	<form onsubmit="javascript:return false;">
-    		<input type="text" id="search_input" placeholder="Search...">
-    		<br>
-    		<!-- input type="submit" value="Search"-->
-		</form>
+			<form onsubmit="javascript:return false;">
+    			<input type="text" id="search_input">
+    			<br>
+    		</form>
 		</div>
+		
 		<div style="display: table; margin-right:auto; margin-left:auto; text-align: left;">
 			<div id="forecastTables"></div>
 	  	</div>
+	  	
 	  	<div class="sidebutton" id="rightSidebarButton" style="cursor: pointer;" 
  			unselectable="on"
  			onselectstart="return false;" 
 			onclick="openRightSidebar()">
 		  	<div id="right_arrow" class="centered_text">&laquo;</div>
 		</div>
+		
   	</div>
+  	<!--  TRANSLATIONS -->
+    <script>
+    	document.getElementById('title').innerHTML = label("page_header");
+    	document.getElementById('title_header').innerHTML = label("page_header");
+    	document.getElementById('disclaimer').innerHTML = label("disclaimer");
+    	document.getElementById('search_input').placeholder = label("search_label");
+    	document.getElementById('parapente_ref').innerHTML = label("parapente_ref");
+    	document.getElementById('colortables_header').innerHTML = label("colortables_header");
+    	document.getElementById('option_wind').innerHTML = label("colortables_wind");
+    	document.getElementById('option_thermal_vel').innerHTML = label("colortables_thermal_vel");
+    	document.getElementById('option_b_s_ratio').innerHTML = label("colortables_b_s_ratio");
+    	document.getElementById('option_bl_top').innerHTML = label("colortables_bl_top");
+    	document.getElementById('option_bl_vmotion').innerHTML = label("colortables_bl_vmotion");
+    	document.getElementById('option_foehn').innerHTML = label("colortables_foehn");
+    	document.getElementById('option_temp').innerHTML = label("colortables_temp");
+    	document.getElementById('change_language').innerHTML = label("change_language");
+	</script>
   </body>
 </html>

@@ -145,6 +145,7 @@ function ColorTableSliderClass(){
 	this.updateColorTable = function(){
 
 		var availableColorTables = {
+				"temp": ["PAL_TEMP", 1, "&#8451;"],
 				"wind": ["PAL_WIND", 3.6, "km/h"],
 				"thermal_vel": ["PAL_THERMIQUES", 1, "m/s"],
 				"b_s_ratio": ["PAL_BSRATIO", 1, null],
@@ -164,9 +165,9 @@ function ColorTableSliderClass(){
 		
 		var colorTableUnitLabel = document.getElementById("unit_label");
 		if(colorTableConfig[2]){
-			colorTableUnitLabel.innerHTML="Unit: " + colorTableConfig[2];
+			colorTableUnitLabel.innerHTML=label("colortables_unit") + ": " + colorTableConfig[2];
 		} else {
-			colorTableUnitLabel.innerHTML="no Unit";
+			colorTableUnitLabel.innerHTML=label("colortables_no_unit");
 		}
 	};
 	
@@ -247,7 +248,7 @@ function initializeWeatherData(){
 				locations = {};
 				locations[place.formatted_address] = [place.geometry.location.lat(),place.geometry.location.lng()];
 			} else {
-				MainControl.showMessage("Given placeID is invalid!");
+				MainControl.showMessage(label("placeid_err"));
 			}
 			WeatherData.refreshAll(ForecastTables.reload.bind(ForecastTables));
 		});
@@ -267,6 +268,7 @@ function initializeWeatherData(){
 $(document).ready(function(){
 	ColorTableSlider.updateColorTable();
 });
+
 
 window.onresize = function(){
 	ColorTableSlider.redrawColorTable();

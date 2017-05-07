@@ -57,7 +57,9 @@ function ForecastTable(coords, name){
 										  function (data) {
 											  var gray = 100*data + 255*(1-data);
 											  return [gray,gray,gray];
-										  }, 16, 3, scale);
+										  },
+										  "rgba(200,0,180,1.0)",
+										  16, 3, scale);
 	};
 		
 	this.constructWindMap = function(data, scale){
@@ -69,6 +71,7 @@ function ForecastTable(coords, name){
 											  return Math.sqrt(umet*umet+vmet*vmet);
 										  },
 										  Color.get.bind(Color, "PAL_WIND"),
+										  "rgba(200,0,180,1.0)",
 										  16, 3, scale
 			);
 	};
@@ -102,22 +105,23 @@ function ForecastTable(coords, name){
 	};
 	
 	this.tableElements = {
-			"Weather":{
-				"Clouds": this.constructCloudMap.bind(this),
-				"Rain": this.constructRow.bind(this,"raintot", "PAL_RAIN")
+			"weather":{
+				"table_temp": this.constructRow.bind(this,"tc2", "PAL_TEMP"),
+				"table_clouds": this.constructCloudMap.bind(this),
+				"table_rain": this.constructRow.bind(this,"raintot", "PAL_RAIN")
 			},
-			"Wind":{
-				"Height Distribution":this.constructWindMap.bind(this),
-				"2000 GND":this.constructArrowHeightRow.bind(this,"umet","vmet",2000,"PAL_WIND"),
-				"1000 GND":this.constructArrowHeightRow.bind(this,"umet","vmet",1000,"PAL_WIND"),
-				"Surface":this.constructArrowHeightRow.bind(this,"umet","vmet",0,"PAL_WIND"),
-				"BL Wind Shear":this.constructRow.bind(this,"blwindshear", "PAL_WIND")
+			"wind":{
+				"table_heightdist":this.constructWindMap.bind(this),
+				"table_2000gnd":this.constructArrowHeightRow.bind(this,"umet","vmet",2000,"PAL_WIND"),
+				"table_1000gnd":this.constructArrowHeightRow.bind(this,"umet","vmet",1000,"PAL_WIND"),
+				"table_surface":this.constructArrowHeightRow.bind(this,"umet","vmet",0,"PAL_WIND"),
+				"table_windshear":this.constructRow.bind(this,"blwindshear", "PAL_WIND")
 			},
-			"Thermals":{
-				"Velocity":this.constructRow.bind(this,"wstar", "PAL_THERMIQUES"),
-				"B/S Ratio":this.constructRow.bind(this,"bsratio", "PAL_BSRATIO"),
-				"BL Top":this.constructRow.bind(this,"pblh", "PAL_CBASE"),
-				"BL Vertical Motion":this.constructRow.bind(this,"wblmaxmin", "PAL_CONVERGENCE"),
+			"thermals":{
+				"table_therm_vel":this.constructRow.bind(this,"wstar", "PAL_THERMIQUES"),
+				"table_therm_bsratio":this.constructRow.bind(this,"bsratio", "PAL_BSRATIO"),
+				"table_therm_bltop":this.constructRow.bind(this,"pblh", "PAL_CBASE"),
+				"table_therm_blvmot":this.constructRow.bind(this,"wblmaxmin", "PAL_CONVERGENCE"),
 			}
 	};
 	
@@ -131,9 +135,9 @@ function ForecastTable(coords, name){
 	};
 	
 	if(this.inAlpsAt){
-		this.tableElements["Wind"]['<a target="_blank" href="http://www.wetteralarm.at/de/wetter/foehndiagramme/foehn-in-den-alpen.html">F&ouml;hn</href>'] = this.constructFoehnRow.bind(this, "at");
+		this.tableElements["wind"]["table_foehn_at"] = this.constructFoehnRow.bind(this, "at");
 	} else if (this.inAlpsCh){
-		this.tableElements["Wind"]['<a target="_blank" href="http://www.meteocentrale.ch/de/wetter/foehn-und-bise/foehn.html">F&ouml;hn</href>'] = this.constructFoehnRow.bind(this, "ch");
+		this.tableElements["wind"]["table_foehn_ch"] = this.constructFoehnRow.bind(this, "ch");
 	}
 	
 	this.clearElement = function(element){
@@ -170,13 +174,13 @@ function ForecastTable(coords, name){
 	this.updateTopLeft = function(){
 		// Set height entry
 		if(this.groundHeight){
-			this.clearElement(this.heightEntry).innerHTML = "Height: " + Math.round(this.groundHeight) + "m";
+			this.clearElement(this.heightEntry).innerHTML = label("height") + ": " + Math.round(this.groundHeight) + "m";
 		}
 		
 		// Set maps link
 		if(this.coords){
 			var mapsLink = document.createElement("a");
-			mapsLink.innerHTML="Map";
+			mapsLink.innerHTML=label("map");
 			mapsLink.target="_blank";
 			mapsLink.href="http://www.google.com/maps/place/" + this.coords.lat + "," + this.coords.lon;
 			this.clearElement(this.mapsLink).appendChild(mapsLink);
@@ -189,7 +193,7 @@ function ForecastTable(coords, name){
 		this.canvases = {};
 		for(day in days){
 			// Send one async load for every day required
-			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra", "raintot", "wstar", "bsratio", "pblh", "ter", "blwindshear", "wblmaxmin"],
+			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra", "raintot", "wstar", "bsratio", "pblh", "tc2", "ter", "blwindshear", "wblmaxmin"],
 				function(day, scale, data){
 					// retreive coordinates from one of the loads
 					if(day === WeatherData.today){
@@ -263,7 +267,7 @@ function ForecastTable(coords, name){
 			tr.style.border = "none";
 			{
 				var td = document.createElement("TD");
-				td.innerHTML="Loading...";
+				td.innerHTML=label("loading");
 				td.colSpan=2;
 				td.style.border = "none";
 				tr.appendChild(td);
@@ -273,7 +277,7 @@ function ForecastTable(coords, name){
 			for(date in datesToLoad){
 				var th = document.createElement("TH");
 				th.style.border = "none";
-				var weekDays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+				var weekDays = [label("sunday"),label("monday"),label("tuesday"),label("wednesday"),label("thursday"),label("friday"),label("saturday")];
 				var dateObj = new Date(date.substring(0,4),parseInt(date.substring(4,6))-1, date.substring(6,8));
 				th.innerHTML = weekDays[dateObj.getDay()] + ", " + dateObj.getDate();
 				tr.appendChild(th);
@@ -289,7 +293,7 @@ function ForecastTable(coords, name){
 			tr.style.border = "none";
 			{
 				var td = document.createElement("TD");
-				td.innerHTML="Loading...";
+				td.innerHTML=label("loading");
 				td.style.border = "none";
 				td.colSpan=2;
 				tr.appendChild(td);
@@ -344,7 +348,7 @@ function ForecastTable(coords, name){
 				th.rowSpan=numSubElements+1;
 				var headerDiv = document.createElement("DIV");
 				headerDiv.className = "vertical";
-				headerDiv.innerHTML=topic;
+				headerDiv.innerHTML=label(topic);
 				
 				
 				th.appendChild(headerDiv);
@@ -364,7 +368,7 @@ function ForecastTable(coords, name){
 					td.style.minWidth=110*scale + "px";
 					td.style.paddingRight= 2*scale + "px";
 					this.scalableElements["subtopics"][topic][element] = td; // minWidth, paddingRight
-					td.innerHTML=element;
+					td.innerHTML=label(element);
 					td.style.border = "none";
 					td.style.textAlign = "right";
 					tr.appendChild(td);
