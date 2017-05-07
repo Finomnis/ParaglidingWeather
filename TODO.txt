@@ -3,12 +3,4 @@ TOP PRIORITY:
 - on click (wind height distr., clouds) open one of two detailed images:
   - wind height distribution, with values and heights
   - cloud height distribution with rain indicator on bottom
-- Foehn 
 
-
-  - tables:
-    - rain
-    - therm. vel.
-    - b/s-ratio
-    - bl top
-    - bl vert. motion

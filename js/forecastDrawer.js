@@ -2,7 +2,7 @@ function ColorClass(){
 	this.get = function(colTable, val){
 		//console.log(Palettes);
 		var palette = Palettes[colTable];
-		if(palette[0] >= val){
+		if(palette[0][0] >= val){
 			return [palette[0][1],palette[0][2],palette[0][3]];
 		}
 		

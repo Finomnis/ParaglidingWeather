@@ -219,6 +219,7 @@ function MainControlClass(){
 		}
 		return popup;
 	};
+	
 	this.hidePopup = function(){
 		this.enablePage();
 		var popup = document.getElementById("popupWindow");
