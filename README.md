@@ -7,4 +7,4 @@ Therefore this page got created.
 
 The only thing added is the föhn data, which gets derived from the pressure difference between Innsbruck and Bozen (for Austria), and Lugano and Zürich (for Switzerland).
 
-The website is live at https://github.com/Finomnis/ParaglidingWeather
+The website is live at https://finomnis.github.io/ParaglidingWeather/
