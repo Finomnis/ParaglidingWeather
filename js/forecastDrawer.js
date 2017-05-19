@@ -66,6 +66,38 @@ function ColorClass(){
 		    Math.round(col_0[3] * weight_0 + col_1[3]*weight_1)
 		];
 	};
+	this.getHSL = function(val_h,val_s,val_l){
+		// Compute c
+		val_c = (1 - Math.abs(2*val_l-1)) * val_s;
+		
+		// compute RGB
+		val_h2 = val_h/60;
+		val_x = val_c * (1 - Math.abs(val_h2%2.0 - 1));
+		
+		rgb1 = [0,0,0];
+		
+		if(val_h2 < 1){
+			rgb1 = [val_c,val_x,0];
+		}else if (val_h2 < 2){
+			rgb1 = [val_x,val_c,0];
+		}else if (val_h2 < 3){
+			rgb1 = [0,val_c,val_x];
+		}else if (val_h2 < 4){
+			rgb1 = [0,val_x,val_c];
+		}else if (val_h2 < 5){
+			rgb1 = [val_x,0,val_c];
+		}else {
+			rgb1 = [val_c,0,val_x];
+		}
+		
+		val_m = val_l - val_c*0.5;
+		
+		return [
+			    Math.round(255 * (rgb1[0] + val_m)),
+			    Math.round(255 * (rgb1[1] + val_m)),
+			    Math.round(255 * (rgb1[2] + val_m))
+		];
+	};
 }
 
 var Color = new ColorClass();
