@@ -1,7 +1,7 @@
 var locations = {
 		"K&ouml;ssen":[47.625305, 12.445411],
 		"Siegritz":[49.855715, 11.220393],
-		"Walberla":[49.716694, 11.159013]
+		"Sammenheim":[49.049908, 10.739406]
 };
 
 var timePoints = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
@@ -219,6 +219,7 @@ function MainControlClass(){
 		}
 		return popup;
 	};
+	
 	this.hidePopup = function(){
 		this.enablePage();
 		var popup = document.getElementById("popupWindow");
