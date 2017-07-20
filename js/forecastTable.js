@@ -155,8 +155,8 @@ function ForecastTable(coords, name){
 	
 	this.tableElements = {
 			"weather":{
-				"table_temp": this.constructRow.bind(this,"tc2", "PAL_TEMP"),
 				"table_press": this.constructRow.bind(this,"slp", "PAL_PRESS"),
+				"table_temp": this.constructRow.bind(this,"tc2", "PAL_TEMP"),
 				"table_clouds": this.constructCloudMap.bind(this),
 				"table_rain": this.constructRow.bind(this,"raintot", "PAL_RAIN")
 			},
