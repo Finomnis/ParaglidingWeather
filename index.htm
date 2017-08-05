@@ -11,6 +11,11 @@
 	    var lang = "en";
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript">
+		window.onerror = function(message){
+			alert("ERROR: " + message);
+		}
+    </script>
     <script src="ext/urlobject.js"></script>
     <script src="ext/base64.min.js"></script>
     <script src="lang.js"></script>
@@ -57,6 +62,7 @@
 				  <option id="option_bl_vmotion" value="bl_vmotion"></option>
 				  <option id="option_foehn" value="foehn"></option>
 				  <option id="option_temp" value="temp"></option>
+				  <option id="option_press" value="press"></option>
 				</select>
 			</div>
 			<div class="colortable_wrapper">
@@ -112,6 +118,7 @@
     	document.getElementById('option_bl_vmotion').innerHTML = label("colortables_bl_vmotion");
     	document.getElementById('option_foehn').innerHTML = label("colortables_foehn");
     	document.getElementById('option_temp').innerHTML = label("colortables_temp");
+    	document.getElementById('option_press').innerHTML = label("colortables_press");
     	document.getElementById('change_language').innerHTML = label("change_language");
 	</script>
   </body>

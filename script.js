@@ -146,10 +146,11 @@ function ColorTableSliderClass(){
 
 		var availableColorTables = {
 				"temp": ["PAL_TEMP", 1, "&#8451;"],
+				"press": ["PAL_PRESS", 1, "hPa"],
 				"wind": ["PAL_WIND", 3.6, "km/h"],
 				"thermal_vel": ["PAL_THERMIQUES", 1, "m/s"],
 				"b_s_ratio": ["PAL_BSRATIO", 1, null],
-				"bl_top": ["PAL_CBASE", 1, "m"],
+				"bl_top": ["PAL_CBASE", 1, "m/GND"],
 				"bl_vmotion": ["PAL_CONVERGENCE", 1, "m/s"],
 				"foehn": ["PAL_WIND", 0.54, "hPa"]
 			};

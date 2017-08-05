@@ -76,6 +76,55 @@ function ForecastTable(coords, name){
 			);
 	};
 	
+	this.constructWindDirMap = function(data, scale){
+		return ForecastDrawer.drawDataMap(data,
+				  this.windMapMaxHeight,
+				  function (data,time,height) {
+					  var umet = data[time]["umet"][height];
+					  var vmet = data[time]["vmet"][height];
+					  return [umet, vmet];
+				  },
+				  function ( vel2 ) {
+					  /*var vel3 = [ vel2[0], vel2[1], 5 ];
+					  var abs = Math.sqrt(vel3[0]*vel3[0]+vel3[1]*vel3[1]+vel3[2]*vel3[2]);
+					  vel3[0] = vel3[0] / abs;
+					  vel3[1] = vel3[1] / abs;
+					  vel3[2] = vel3[2] / abs;
+					  return [
+			          Math.round(vel3[0] * 127.5 + 127.5),
+			          Math.round(vel3[1] * 127.5 + 127.5),
+			          Math.round(vel3[2] * 127.5 + 127.5),
+			          ];*/
+					  
+					  var abs = Math.sqrt(vel2[0]*vel2[0]+vel2[1]*vel2[1]);
+					  vel2[0] = vel2[0] / abs;
+					  vel2[1] = vel2[1] / abs;
+					  
+					  if(vel2[0] > vel2[1]){
+						  
+					  }
+					  
+					  var dir = Math.atan(vel2[0]/vel2[1]) * 180 / Math.PI; 
+					  var dir2 = 90 - Math.atan(vel2[1]/vel2[0]) * 180 / Math.PI;
+					  
+					  while(dir > 180) dir = dir - 180;
+					  while(dir < 0) dir = dir + 180;
+					  
+					  if(vel2[0] > 0){
+						  dir = 180 + dir;
+					  }
+					  
+					  console.log(dir + " - " + dir2);
+					  
+					  
+					  return Color.getHSL(dir, 1, Math.min(abs/20,0.5));
+					   
+				  },
+				  "rgba(255,255,255,0.7)",
+				  16, 3, scale
+			);
+	};
+	
 	this.constructRow = function(type, colmap, data, scale){
 		return ForecastDrawer.drawColorLine(data, type, Color.get.bind(Color,colmap), 16, 16, scale);
 	};
@@ -116,11 +165,13 @@ function ForecastTable(coords, name){
 	
 	this.tableElements = {
 			"weather":{
+				"table_press": this.constructRow.bind(this,"slp", "PAL_PRESS"),
 				"table_temp": this.constructRow.bind(this,"tc2", "PAL_TEMP"),
 				"table_clouds": this.constructCloudMap.bind(this),
 				"table_rain": this.constructRow.bind(this,"raintot", "PAL_RAIN")
 			},
 			"wind":{
+				//"table_heightdirdist":this.constructWindDirMap.bind(this),
 				"table_heightdist":this.constructWindMap.bind(this),
 				"table_2000gnd":this.constructArrowHeightRow.bind(this,"umet","vmet",2000,"PAL_WIND"),
 				"table_1000gnd":this.constructArrowHeightRow.bind(this,"umet","vmet",1000,"PAL_WIND"),
@@ -203,7 +254,7 @@ function ForecastTable(coords, name){
 		this.canvases = {};
 		for(day in days){
 			// Send one async load for every day required
-			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra", "raintot", "wstar", "bsratio", "pblh", "tc2", "ter", "blwindshear", "wblmaxmin"],
+			WeatherData.fetchData(coords, day, this.time_points, ["z", "umet", "vmet", "cldfra", "raintot", "wstar", "bsratio", "pblh", "tc2", "ter", "blwindshear", "wblmaxmin", "slp"],
 				function(day, scale, data){
 					// retreive coordinates from one of the loads
 					if(day === WeatherData.today){
