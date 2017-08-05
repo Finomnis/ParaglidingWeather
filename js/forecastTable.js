@@ -243,7 +243,8 @@ function ForecastTable(coords, name){
 			var mapsLink = document.createElement("a");
 			mapsLink.innerHTML=label("map");
 			mapsLink.target="_blank";
-			mapsLink.href="http://www.google.com/maps/place/" + this.coords.lat + "," + this.coords.lon;
+			//mapsLink.href="http://www.google.com/maps/place/" + this.coords.lat + "," + this.coords.lon;
+			mapsLink.href="https://meteo-parapente.com/#/" + this.coords.lat + "," + this.coords.lon + ",12";
 			this.clearElement(this.mapsLink).appendChild(mapsLink);
 		}
 	};
