@@ -150,7 +150,7 @@ function ColorTableSliderClass(){
 				"thermal_vel": ["PAL_THERMIQUES", 1, "m/s"],
 				"b_s_ratio": ["PAL_BSRATIO", 1, null],
 				"bl_top": ["PAL_CBASE", 1, "m"],
-				"bl_vmotion": ["PAL_CONVERGENCE", 0.01, "m/s"],
+				"bl_vmotion": ["PAL_CONVERGENCE", 1, "m/s"],
 				"foehn": ["PAL_WIND", 0.54, "hPa"]
 			};
 		

@@ -80,6 +80,16 @@ function ForecastTable(coords, name){
 		return ForecastDrawer.drawColorLine(data, type, Color.get.bind(Color,colmap), 16, 16, scale);
 	};
 	
+	this.constructScaledRow = function(type, colmap, colorScale, data, scale){
+		return ForecastDrawer.drawColorLine(
+			data, type,
+			function (val){
+					return Color.get(colmap, val*colorScale);
+			},
+			16, 16, scale
+		);
+	};
+	
 	this.constructArrowHeightRow = function(type1, type2, height, colmap, data, scale){
 		var height0 = data[Object.keys(data)[0]]["ter"];
 		return ForecastDrawer.drawColorArrowHeightLine(data, type1, type2, height0 + height, Color.get.bind(Color,colmap), 16, 16, scale);
@@ -121,7 +131,7 @@ function ForecastTable(coords, name){
 				"table_therm_vel":this.constructRow.bind(this,"wstar", "PAL_THERMIQUES"),
 				"table_therm_bsratio":this.constructRow.bind(this,"bsratio", "PAL_BSRATIO"),
 				"table_therm_bltop":this.constructRow.bind(this,"pblh", "PAL_CBASE"),
-				"table_therm_blvmot":this.constructRow.bind(this,"wblmaxmin", "PAL_CONVERGENCE"),
+				"table_therm_blvmot":this.constructScaledRow.bind(this,"wblmaxmin", "PAL_CONVERGENCE", 0.01),
 			}
 	};
 	
