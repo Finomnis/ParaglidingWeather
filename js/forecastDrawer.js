@@ -123,7 +123,7 @@ function ForecastDrawerClass(){
 	};
 	
 	this.getBLEntry = function(data, time){
-		return this.getNumEntries(data, data[time].pblh);
+		return this.getNumEntries(data, data[time].pbltop);
 	};
 	
 	this.drawDataMap = function(data, maxHeight, getDataCallback, getColorCallback, boundaryLayerColor, cellWidth, cellHeight, scale){
