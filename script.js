@@ -268,6 +268,10 @@ function initializeWeatherData(){
 });*/
 
 $(document).ready(function(){
+	if(navigator.geolocation){
+		document.getElementById("gps_input").style.display="inline";
+	}
+	
 	ColorTableSlider.updateColorTable();
 });
 

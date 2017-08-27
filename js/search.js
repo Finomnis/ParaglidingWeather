@@ -9,14 +9,43 @@ function URLGeneratorClass(){
 	};
 	
 	this.enterWebsiteCoords = function(lat, lng){
+		this.enterWebsiteNamedCoords("Coords (" + lat + ", " + lng + ")", lat,lng);
+	};
+	
+	this.enterWebsiteNamedCoords = function(name, lat, lng){
 		var coords = new google.maps.LatLng(lat, lng);
 	    if(!searchBounds.contains(coords)){
 			MainControl.showMessage(label("search_coordinate") + " (" + lat + ", " + lng + ") " + label("search_coord_outside"));
 			return;
 		}
 		var locs = {};
-		locs["Coords (" + lat + ", " + lng + ")"] = [lat,lng];
+		locs[name] = [lat,lng];
 		window.location.href = window.location.origin + window.location.pathname + "?lang=" + Labels.currentLang + "&locations=" + URLCoder.encodeBase64(locs);
+	};
+	
+	this.searchCurrentLocation = function(){
+		if(navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(function(position){
+				console.log(position);
+				
+				latlng = {lat: position.coords.latitude, lng: position.coords.longitude};
+				
+				geocoder.geocode({'location': latlng}, function(latlng, results, status) {
+					console.log(latlng);
+			          	if (status === 'OK') {
+			          		for(var i = 0; i < results.length; i++){
+			          			if(results[i].types.includes("locality")){
+			        				this.enterWebsiteNamedCoords(results[i].formatted_address, latlng.lat, latlng.lng);
+			        				return;
+			        			}
+			          		}
+			          		this.enterWebsiteNamedCoords(results[0].formatted_address, latlng.lat, latlng.lng);
+			          	} else {
+			          		this.enterWebsiteCoords(latlng.lat, latlng.lng);
+			          	}
+			        }.bind(this, latlng));
+			}.bind(this));
+		}
 	};
 	
 	this.search = function(){

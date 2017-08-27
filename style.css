@@ -132,6 +132,12 @@ canvas, div {
 	font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 	font-size:20px;
 }
+.gps_input {
+	position: relative;
+	top: 4px;
+	left: -5px;
+	display: none;
+}
 
 /********************************************
  * SIDEBAR RIGHT

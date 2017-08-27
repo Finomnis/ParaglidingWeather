@@ -3,9 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title id="title"></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="icon/favicon-16x16.png" sizes="16x16">
+    
     <script type="text/javascript">
 	    //document.write('<style type="text/css">#nojs { display: none; }</style>');
 	    var lang = "en";
@@ -86,8 +88,13 @@
 		
 		<div style="padding: 10px;">
 			<form onsubmit="javascript:return false;">
-    			<input type="text" id="search_input">
-    			<br>
+				<div class="gps_input" id="gps_input">
+					<a href="javascript:void(0)" onclick="URLGenerator.searchCurrentLocation()" style="color: #000000; text-decoration: none">
+						<i class="material-icons">my_location</i>
+					</a>
+				</div>
+				<input type="text" id="search_input">
+				
     		</form>
 		</div>
 		
