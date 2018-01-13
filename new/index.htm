@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title id="title"></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="icon/favicon-16x16.png" sizes="16x16">
+    
+    <script type="text/javascript">
+	    //document.write('<style type="text/css">#nojs { display: none; }</style>');
+	    var lang = "en";
+    </script>
+
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107446471-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments)};
+	  gtag('js', new Date());
+	  gtag('config', 'UA-107446471-1');
+	</script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+		var onErrorAlreadyExecuted = false;
+    	window.onerror = function(message){
+			if(onErrorAlreadyExecuted)
+				return;
+			onErrorAlreadyExecuted = true;
+    		alert("ERROR: " + message);
+    	}
+    </script>
+    <script src="ext/urlobject.js"></script>
+    <script src="ext/base64.min.js"></script>
+    
+    <script src="lang.js"></script>
+    
+    <!-- Client Scripts -->
+    <script src="js/deferred.js"></script>
+    <script src="js/parapenteData.js"></script>
+    
+    <!-- End of Client Scripts -->
+    
+    <script id="google_maps_api_script"></script>
+	<script>
+		function googleMapsApiInitializedCallback(){ googleMapsApiInitialized.resolve(); };
+		document.getElementById('google_maps_api_script').src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBCrP5uoEJXfEvz8f_y1HgzQnqUGHz0Aak&libraries=places,geometry&callback=googleMapsApiInitializedCallback&language=" + Labels.currentLang;
+	</script>
+  </head>
+  
+  <body>
+  	
+  	<!-- Disables the popup on click on background -->
+  	<div id="fullscreenDisabler" class="centerPseudo" onclick="MainControl.hidePopup()">
+	</div>
+	<div id="popupWindow" onclick="console.log(40); return false;">test<BR>test2<BR>test3</div>
+  	
+  	<!--div id="popupWindowWrapper" onclick="console.log(30)">
+	</div-->
+  	
+  	<!-- div id="left_bar">
+  	</div-->
+  	
+  	<div id="right_bar">
+  		<div class="content_wrapper">
+	  		<div class="header_wrapper">
+	  			<h1 id="colortables_header"></h1>
+	  		</div>
+	  		<div class="selection_wrapper">
+		  		<select name="Table Type" id="color_table_select" onchange="ColorTableSlider.updateColorTable()">
+				  <option id="option_wind" value="wind" selected></option>
+				  <option id="option_thermal_vel" value="thermal_vel"></option>
+				  <option id="option_b_s_ratio" value="b_s_ratio"></option>
+				  <option id="option_bl_top" value="bl_top"></option>
+				  <option id="option_bl_vmotion" value="bl_vmotion"></option>
+				  <option id="option_foehn" value="foehn"></option>
+				  <option id="option_temp" value="temp"></option>
+				  <option id="option_press" value="press"></option>
+				</select>
+			</div>
+			<div class="colortable_wrapper">
+				<div id="unit_label">
+				Unit: ERROR
+				</div>
+		  		<div id="colortable"></div>
+		  	</div>
+	  	</div>
+  	</div>
+  	
+  	<div id="main" style="text-align: center;">
+  		<div style="position: absolute; left: 0px; top: 0px; text-align:left; color:gray; font-size: 12px;" id="disclaimer"></div>
+  		<div style="position: fixed; left: 5px; bottom: 5px; text-align:left; color:gray; font-size: 15px;" id="change_language"></div>
+		
+		<div onclick="javascript:window.location.href=window.location.origin+window.location.pathname+'?lang='+Labels.currentLang" style="cursor: pointer;">
+			<h1 id="title_header" style="text-align: center; font-size: 35px; margin-top: 50px;"></h1>
+		</div>
+		
+		<h4 id="parapente_ref" style="text-align: center; font-size: 20px;"></h4>
+		
+		<div style="padding: 10px;">
+			<form onsubmit="javascript:return false;">
+				<div class="gps_input" id="gps_input">
+					<a href="javascript:void(0)" onclick="URLGenerator.searchCurrentLocation()" style="color: #000000; text-decoration: none">
+						<i class="material-icons">my_location</i>
+					</a>
+				</div>
+				<input type="text" id="search_input">
+				
+    		</form>
+		</div>
+		
+		<div style="display: table; margin-right:auto; margin-left:auto; text-align: left;">
+			<div id="forecastTables"></div>
+	  	</div>
+	  	
+	  	<div class="sidebutton" id="rightSidebarButton" style="cursor: pointer;" 
+ 			unselectable="on"
+ 			onselectstart="return false;" 
+			onclick="openRightSidebar()">
+		  	<div id="right_arrow" class="centered_text">&laquo;</div>
+		</div>
+		
+  	</div>
+  	<!--  TRANSLATIONS -->
+    <script>
+    	document.getElementById('title').innerHTML = label("page_header");
+    	document.getElementById('title_header').innerHTML = label("page_header");
+    	document.getElementById('disclaimer').innerHTML = label("disclaimer");
+    	document.getElementById('search_input').placeholder = label("search_label");
+    	document.getElementById('parapente_ref').innerHTML = label("parapente_ref");
+    	document.getElementById('colortables_header').innerHTML = label("colortables_header");
+    	document.getElementById('option_wind').innerHTML = label("colortables_wind");
+    	document.getElementById('option_thermal_vel').innerHTML = label("colortables_thermal_vel");
+    	document.getElementById('option_b_s_ratio').innerHTML = label("colortables_b_s_ratio");
+    	document.getElementById('option_bl_top').innerHTML = label("colortables_bl_top");
+    	document.getElementById('option_bl_vmotion').innerHTML = label("colortables_bl_vmotion");
+    	document.getElementById('option_foehn').innerHTML = label("colortables_foehn");
+    	document.getElementById('option_temp').innerHTML = label("colortables_temp");
+    	document.getElementById('option_press').innerHTML = label("colortables_press");
+    	document.getElementById('change_language').innerHTML = label("change_language");
+	</script>
+  </body>
+</html>
