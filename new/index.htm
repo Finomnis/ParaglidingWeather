@@ -162,18 +162,6 @@
     	//document.getElementById('option_temp').innerHTML = label("colortables_temp");
     	//document.getElementById('option_press').innerHTML = label("colortables_press");
 	</script>
-
-	<!-- Auto-Hide the address bar -->
-	<script>
-		window.addEventListener("load", function() {
-			setTimeout(function() {
-				var scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-				if (scrollPos < 1) {
-					console.log("Trying to hide address bar...");
-					window.scrollTo(0,1);
-				}
-			}, 0);
-		});
-	</script>
+	
   </body>
 </html>
