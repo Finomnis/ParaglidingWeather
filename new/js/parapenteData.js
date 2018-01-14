@@ -2,9 +2,11 @@
 function WeatherDataClass(){
 	this.initialized = $.Deferred();
 
+	var url = "https://data0.meteo-parapente.com/status.php";
 	$.ajax({
-		url: "https://data0.meteo-parapente.com/status.php",
+		url: url,
 		dataType: "jsonp",
+		error: MainControl.getAjaxErrorHandler(url),
 		success: $.proxy(function(data){
 			this.runDays = {};
 			this.domain = Object.keys(data)[0];
@@ -65,8 +67,9 @@ function ParapenteJsClientClass(){
 		this.initialized.resolve();
 	},this);
 	
+	var url = "https://meteo-parapente.com/client.e96c0291.js";
 	$.ajax({
-		  url: "https://meteo-parapente.com/client.e96c0291.js",
+		  url: url,
 		  dataType: "jsonp",
 		});
 	

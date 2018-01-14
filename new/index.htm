@@ -12,7 +12,7 @@
 	    //document.write('<style type="text/css">#nojs { display: none; }</style>');
 	    var lang = "en";
     </script>
-
+    
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107446471-1"></script>
 	<script>
@@ -35,11 +35,14 @@
     <script src="ext/urlobject.js"></script>
     <script src="ext/base64.min.js"></script>
     
-    <script src="lang.js"></script>
     
     <!-- Client Scripts -->
+    <script src="lang.js"></script>
+    <script src="js/MainControlClass.js"></script>
     <script src="js/deferred.js"></script>
     <script src="js/parapenteData.js"></script>
+    <script src="js/ForecastTable.js"></script>
+    <script src="js/URLGenerator.js"></script>
     
     <!-- End of Client Scripts -->
     
@@ -53,9 +56,8 @@
   <body>
   	
   	<!-- Disables the popup on click on background -->
-  	<div id="fullscreenDisabler" class="centerPseudo" onclick="MainControl.hidePopup()">
-	</div>
-	<div id="popupWindow" onclick="console.log(40); return false;">test<BR>test2<BR>test3</div>
+  	<div id="fullscreenDisabler" class="centerPseudo" onclick="MainControl.hidePopup()"></div>
+	<div id="popupWindow" onclick="/*console.log(40);*/ return false;"></div>
   	
   	<!--div id="popupWindowWrapper" onclick="console.log(30)">
 	</div-->
@@ -63,7 +65,7 @@
   	<!-- div id="left_bar">
   	</div-->
   	
-  	<div id="right_bar">
+  	<!--div id="right_bar">
   		<div class="content_wrapper">
 	  		<div class="header_wrapper">
 	  			<h1 id="colortables_header"></h1>
@@ -87,17 +89,25 @@
 		  		<div id="colortable"></div>
 		  	</div>
 	  	</div>
-  	</div>
+  	</div-->
   	
   	<div id="main" style="text-align: center;">
-  		<div style="position: absolute; left: 0px; top: 0px; text-align:left; color:gray; font-size: 12px;" id="disclaimer"></div>
-  		<div style="position: fixed; left: 5px; bottom: 5px; text-align:left; color:gray; font-size: 15px;" id="change_language"></div>
+  		<div style="position: absolute; left: 0px; top: 0px; text-align:left; color:gray; font-size: 12px;">
+  			<script>addText("disclaimer");</script>
+  		</div>
+  		<div style="position: fixed; left: 5px; bottom: 5px; text-align:left; color:gray; font-size: 15px;">
+  			<script>addText("change_language")</script>
+  		</div>
 		
 		<div onclick="javascript:window.location.href=window.location.origin+window.location.pathname+'?lang='+Labels.currentLang" style="cursor: pointer;">
-			<h1 id="title_header" style="text-align: center; font-size: 35px; margin-top: 50px;"></h1>
+			<h1 style="text-align: center; font-size: 35px; margin-top: 50px;">
+				<script>addText("page_header")</script>
+			</h1>
 		</div>
 		
-		<h4 id="parapente_ref" style="text-align: center; font-size: 20px;"></h4>
+		<h4 id="parapente_ref" style="text-align: center; font-size: 20px;">
+			<script>addText("parapente_ref")</script>
+		</h4>
 		
 		<div style="padding: 10px;">
 			<form onsubmit="javascript:return false;">
@@ -107,39 +117,50 @@
 					</a>
 				</div>
 				<input type="text" id="search_input">
-				
     		</form>
+    		<script>
+    			$(document).ready(function(){
+					googleMapsApiInitialized.then(function(){
+		    			console.log("Initializing search window ...");
+		        		searchBounds = new google.maps.LatLngBounds(
+		        		          new google.maps.LatLng( 41.43, -4.96), //sw
+		        		          new google.maps.LatLng( 51.4, 15.72 ) //ne
+		        		        );
+		        		autocomplete = new google.maps.places.Autocomplete(document.getElementById("search_input"),{types:['geocode'], bounds:searchBounds});
+		        		autocomplete.addListener('place_changed', function(){URLGenerator.search();});
+		        	})
+	        		if(navigator.geolocation){
+						document.getElementById("gps_input").style.display="inline";
+					}
+	        	});
+    		</script>
 		</div>
 		
 		<div style="display: table; margin-right:auto; margin-left:auto; text-align: left;">
 			<div id="forecastTables"></div>
 	  	</div>
 	  	
-	  	<div class="sidebutton" id="rightSidebarButton" style="cursor: pointer;" 
+	  	<!--div class="sidebutton" id="rightSidebarButton" style="cursor: pointer;" 
  			unselectable="on"
  			onselectstart="return false;" 
 			onclick="openRightSidebar()">
 		  	<div id="right_arrow" class="centered_text">&laquo;</div>
-		</div>
+		</div-->
 		
   	</div>
   	<!--  TRANSLATIONS -->
     <script>
     	document.getElementById('title').innerHTML = label("page_header");
-    	document.getElementById('title_header').innerHTML = label("page_header");
-    	document.getElementById('disclaimer').innerHTML = label("disclaimer");
     	document.getElementById('search_input').placeholder = label("search_label");
-    	document.getElementById('parapente_ref').innerHTML = label("parapente_ref");
-    	document.getElementById('colortables_header').innerHTML = label("colortables_header");
-    	document.getElementById('option_wind').innerHTML = label("colortables_wind");
-    	document.getElementById('option_thermal_vel').innerHTML = label("colortables_thermal_vel");
-    	document.getElementById('option_b_s_ratio').innerHTML = label("colortables_b_s_ratio");
-    	document.getElementById('option_bl_top').innerHTML = label("colortables_bl_top");
-    	document.getElementById('option_bl_vmotion').innerHTML = label("colortables_bl_vmotion");
-    	document.getElementById('option_foehn').innerHTML = label("colortables_foehn");
-    	document.getElementById('option_temp').innerHTML = label("colortables_temp");
-    	document.getElementById('option_press').innerHTML = label("colortables_press");
-    	document.getElementById('change_language').innerHTML = label("change_language");
+    	//document.getElementById('colortables_header').innerHTML = label("colortables_header");
+    	//document.getElementById('option_wind').innerHTML = label("colortables_wind");
+    	//document.getElementById('option_thermal_vel').innerHTML = label("colortables_thermal_vel");
+    	//document.getElementById('option_b_s_ratio').innerHTML = label("colortables_b_s_ratio");
+    	//document.getElementById('option_bl_top').innerHTML = label("colortables_bl_top");
+    	//document.getElementById('option_bl_vmotion').innerHTML = label("colortables_bl_vmotion");
+    	//document.getElementById('option_foehn').innerHTML = label("colortables_foehn");
+    	//document.getElementById('option_temp').innerHTML = label("colortables_temp");
+    	//document.getElementById('option_press').innerHTML = label("colortables_press");
 	</script>
   </body>
 </html>

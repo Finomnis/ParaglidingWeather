@@ -132,6 +132,10 @@ function LabelsClass(){
 
 var Labels = new LabelsClass();
 
+function addText(labelID){
+	document.currentScript.parentElement.innerHTML = Labels.get(labelID);
+}
+
 function label(labelID){
 	return Labels.get(labelID);
 };
